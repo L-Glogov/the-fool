@@ -5,8 +5,6 @@ import PropTypes from 'prop-types';
 
 const Lobby = ( props ) => {
 
-
-  
   return (
     <main>
       <div>

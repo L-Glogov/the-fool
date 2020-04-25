@@ -1,5 +1,6 @@
 import app from 'firebase/app';
 import 'firebase/database';
+import 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -15,17 +16,30 @@ const firebaseConfig = {
 class Firebase {
   constructor() {
     app.initializeApp(firebaseConfig);
-
+    this.auth = app.auth();
     this.db = app.database();
   }
 
-  updateGameList = (game) => {
+  addGameToList = (game) => {
     const newGameKey = this.db.ref().child('games').push().key;
     let updates = {};
     updates['/games/' + newGameKey] = game;
     return this.db.ref().update(updates);
   };
 
+  games = () => this.db.ref('games');
+
+  signUpUser = (email, password) => this.auth.createUserWithEmailAndPassword(email, password);
+
+  signInUser = (email, password) => {
+    return this.auth.signInWithEmailAndPassword(email, password);
+  }
+
+  signOutUser = () => this.auth.signOut();
+
+  resetUserPassword = email => this.auth.sendPasswordResetEmail(email);
+
+  updateUserPassword = password => this.auth.currentUser.updatePassword(password);
 }
 
 export default Firebase;
