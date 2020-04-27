@@ -48,13 +48,17 @@ const SignIn = ( props ) => {
           placeholder="Password"
           minLength={8}
         />
-        <button type="submit" disabled={isInvalid}>Sing In</button>
+        <button type="submit" disabled={isInvalid}>Sign In</button>
       </form>
       <div>
         <p>Don&apos;t have an account?</p>
         <Link to="/signup">Sign Up!</Link>
       </div>
-      
+      <div>
+        <p>Forget your password?</p>
+        <Link to="/reset-pass">Click here to reset.</Link>
+      </div>
+      <Link to="/main-menu">Go back to Main Menu</Link> 
     </main>
   );  
 }

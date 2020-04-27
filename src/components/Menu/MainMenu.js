@@ -25,16 +25,14 @@ const MainMenu = ( props ) => {
   return (
     <main>
       <div>
-        <form onSubmit={e => e.preventDefault()}>
-          <label>Name:</label>
-          <input 
-            type="text"
-            value={props.playerName}
-            onChange={e => props.setPlayerName(e.target.value)}
-          />
-        </form>
-        <Link to="/lobby" onClick={props.join}>Join Game</Link>
-        <Link to="/lobby" onClick={props.host}>Host Game</Link>
+        {props.user 
+          ? <div>
+              <p>You are signed in as {props.user.displayName}</p>
+              <Link to="/lobby" onClick={props.join}>Join Game</Link>
+              <Link to="/lobby" onClick={props.host}>Host Game</Link>
+            </div> 
+          : <Link to="/signin">Sign in to start!</Link>
+        } 
       </div>
       <div>
         <div>
@@ -63,12 +61,11 @@ const MainMenu = ( props ) => {
 }
 
 MainMenu.propTypes = {
-  setPlayerName: PropTypes.func.isRequired,
-  playerName: PropTypes.string.isRequired,
   gameList: PropTypes.array.isRequired,
   setCurrent: PropTypes.func.isRequired,
   join: PropTypes.func.isRequired,
-  host: PropTypes.func.isRequired
+  host: PropTypes.func.isRequired, 
+  user: PropTypes.object
 }
 
 export default MainMenu;

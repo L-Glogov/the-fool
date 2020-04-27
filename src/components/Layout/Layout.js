@@ -24,7 +24,7 @@ const Layout = ( props ) => {
 }
 
 Layout.propTypes = {
-  signedIn: PropTypes.string,
+  signedIn: PropTypes.object,
   children: PropTypes.object.isRequired
 }
 
