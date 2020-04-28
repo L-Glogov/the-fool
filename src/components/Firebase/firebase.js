@@ -30,6 +30,12 @@ class Firebase {
 
   games = () => this.db.ref('games');
 
+  updateGameStatus = (gameKey, gameStatus) => {
+    let updates = {};
+    updates['/games/' + gameKey + '/started'] = gameStatus;
+    return this.db.ref().update(updates);
+  }
+
   updateGamePlayers = (gameKey, updatedPlayers) => {
     let updates = {};
     updates['/games/' + gameKey + '/players'] = updatedPlayers;

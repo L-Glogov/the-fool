@@ -30,7 +30,8 @@ const App = ( props ) => {
             id: data[key].id,
             host: data[key].host,
             hostId: data[key].hostId,
-            players: data[key].players
+            players: data[key].players,
+            started: data[key].started
           });
         }
         return newList;
@@ -80,7 +81,8 @@ const App = ( props ) => {
         name: authUser.displayName,
         id: authUser.uid,
         ready: false
-      }]
+      }],
+      started: false
     }
     setCurrentGame(draft => {
       draft.id = gameKey;
@@ -91,6 +93,7 @@ const App = ( props ) => {
         id: authUser.uid, 
         ready: false
       }];
+      draft.started = false;
     })
 
     props.firebase.addGameToList(game, gameKey);
@@ -99,8 +102,58 @@ const App = ( props ) => {
 
   // -----Lobby Handlers-----
 
-  const LobbyStartHandler = () => {
+  const LobbyStartHandler = (gameKey, gameStatus, players) => {
     console.log("The game has been started");
+    
+    const startingPlayer = Math.floor(Math.random()*players.length);
+    let deck = [];
+    switch (players.length) {
+      case 2:
+        deck = [1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,'C','C','M','M'];
+        break;
+      case 3: 
+        deck = [1,1,1,2,2,2,3,3,3,4,4,4,5,5,5,6,6,6,7,7,7,8,8,8,9,9,9,10,10,10,11,11,11,'C','C','C','M','M','M'];
+        break;
+      case 4:
+        deck = [1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7,8,8,8,8,9,9,9,9,10,10,10,10,11,11,11,11,'C','C','C','C','M','M','M','M'];
+        break;
+      default:
+        deck = [1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7,8,8,8,8,9,9,9,9,10,10,10,10,11,11,11,11,'C','C','C','C','M','M','M','M'];
+    }
+
+    const rndCard = (deck) => {
+      return deck.splice(Math.floor(Math.random()*deck.length), 1);
+    }
+
+    const rndCardSet = (num, deck) => {
+      const cardSet = [];
+      for (let n = 1; n <= num; n++) {
+        cardSet.push(rndCard(deck));
+      }
+      return cardSet;
+    }
+
+    const playerState = [];
+    players.forEach((player, index) => {
+      const turn = startingPlayer === index ? true : false;
+      const handCards = rndCardSet(5, deck);
+      const faceDownCards = rndCardSet(4, deck);
+      const faceUpCards = rndCardSet(4, deck);
+      playerState.push({
+        name: player.name,
+        id: player.id,
+        isTurn: turn,
+        hand: handCards,
+        faceDown: faceDownCards,
+        faceUp: faceUpCards
+      })
+    })
+
+    console.log(playerState);
+    console.log(deck);
+
+    props.firebase.updateGameStatus(gameKey, gameStatus);
+
   }
 
   const LobbyUpdatePlayers = (gameKey, updatedPlayers) => {
@@ -110,6 +163,7 @@ const App = ( props ) => {
     });
   }
 
+
    
   const guarded = <Switch>
     <Route 
@@ -117,6 +171,8 @@ const App = ( props ) => {
       exact 
       render={(props) => <GameBoard 
         {...props}
+        current={currentGame}
+        gameList={gameList}
       />}
     />
     <Route 

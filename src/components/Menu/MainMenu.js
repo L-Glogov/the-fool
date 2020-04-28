@@ -16,9 +16,11 @@ const MainMenu = ( props ) => {
           draft.hostId = game.hostId;
           draft.host = game.host;
           draft.players = game.players;
+          draft.started = game.started;
         })}
         className={styles.gameListItem}>
         {game.host}&apos;s Game {'\u00a0 \u00a0'} Players:{game.players.length}/4
+        Status: {game.started ? 'Ongoing' : 'Lobby'}
       </li>
     )
   })

@@ -1,11 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 // import styles from './Lobby.module.css';
 
 const Lobby = ( props ) => {
-  
+
   const gameIndex = props.gameList.findIndex(item => item.id === props.current.id);
+
   const isHost = props.gameList[gameIndex].hostId === props.user.uid;
   
   const players = props.gameList[gameIndex].players.map((item, index) => {
@@ -19,12 +20,9 @@ const Lobby = ( props ) => {
         name: item.name,
         ready: item.ready
       })
-    })
+    })  
     const isReady = readyPlayer[index].ready;
-    console.log(readyPlayer);
-    console.log(!isReady);
     readyPlayer[index].ready = !isReady;
-    console.log(readyPlayer);
     return (
       <li key={item.id}>
         {isHost && index !== 0 && <button onClick={() => props.updatePlayers(props.gameList[gameIndex].id, withoutPlayer)}>Kick Player</button>}
@@ -35,19 +33,18 @@ const Lobby = ( props ) => {
     )
   })
 
-  let showStart = props.gameList[gameIndex].players.length >= 2;
+  let showStart = props.gameList[gameIndex].players.length >= 2 && isHost;
   props.gameList[gameIndex].players.forEach(item => {
     if (item.ready === false) {
       showStart = false;
     }
   })
-
-  console.log(showStart);
-
+  
   return (
     <main>
+      {props.gameList[gameIndex].started && <Redirect to="/gameboard" />}
       <div>
-        {showStart && <Link to="/gameboard" onClick={props.start}>Start Game</Link>}
+        {showStart && <button onClick={() => props.start(props.gameList[gameIndex].id, true, props.gameList[gameIndex].players)}>Start Game</button>}
         <Link to="/main-menu">Go back to Main Menu</Link>
       </div>
       <div>
@@ -63,8 +60,9 @@ Lobby.propTypes = {
   current: PropTypes.object.isRequired,
   gameList: PropTypes.array.isRequired,
   updatePlayers: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
 
 }
 
-export default Lobby;
+export default withRouter(Lobby);
