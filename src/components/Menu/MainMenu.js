@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './MainMenu.module.css';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 const MainMenu = ( props ) => {
 
@@ -13,6 +13,7 @@ const MainMenu = ( props ) => {
         key={game.id} 
         onClick={() => props.setCurrent(draft => {
           draft.id =  game.id;
+          draft.hostId = game.hostId;
           draft.host = game.host;
           draft.players = game.players;
         })}
@@ -21,15 +22,14 @@ const MainMenu = ( props ) => {
       </li>
     )
   })
-
   return (
     <main>
       <div>
         {props.user 
           ? <div>
               <p>You are signed in as {props.user.displayName}</p>
-              <Link to="/lobby" onClick={props.join}>Join Game</Link>
-              <Link to="/lobby" onClick={props.host}>Host Game</Link>
+              {props.current.id !== null && <button onClick={() => props.join(props.history)}>Join Game</button>}
+              <button onClick={() => props.host(props.history)}>Host Game</button>
             </div> 
           : <Link to="/signin">Sign in to start!</Link>
         } 
@@ -63,9 +63,11 @@ const MainMenu = ( props ) => {
 MainMenu.propTypes = {
   gameList: PropTypes.array.isRequired,
   setCurrent: PropTypes.func.isRequired,
+  current: PropTypes.object.isRequired,
   join: PropTypes.func.isRequired,
   host: PropTypes.func.isRequired, 
-  user: PropTypes.object
+  user: PropTypes.object,
+  history: PropTypes.object.isRequired
 }
 
-export default MainMenu;
+export default withRouter(MainMenu);

@@ -20,14 +20,21 @@ class Firebase {
     this.db = app.database();
   }
 
-  addGameToList = (game) => {
-    const newGameKey = this.db.ref().child('games').push().key;
+  newGameKey = () => this.db.ref().child('games').push().key;
+
+  addGameToList = (game, gameKey) => {
     let updates = {};
-    updates['/games/' + newGameKey] = game;
+    updates['/games/' + gameKey] = game;
     return this.db.ref().update(updates);
   };
 
   games = () => this.db.ref('games');
+
+  updateGamePlayers = (gameKey, updatedPlayers) => {
+    let updates = {};
+    updates['/games/' + gameKey + '/players'] = updatedPlayers;
+    return this.db.ref().update(updates);
+  }
 
   signUpUser = (email, password) => this.auth.createUserWithEmailAndPassword(email, password);
 

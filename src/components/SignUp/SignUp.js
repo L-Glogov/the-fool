@@ -27,7 +27,7 @@ const SignUp = ( props ) => {
       setEmail('');
       setPass('');
       setConfPass('');
-      props.history.push('/main-menu');
+      props.history.push('/');
     })
     .catch(error => {
       console.error(error);
