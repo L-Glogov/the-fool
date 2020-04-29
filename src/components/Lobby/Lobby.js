@@ -42,7 +42,7 @@ const Lobby = ( props ) => {
   
   return (
     <main>
-      {props.gameList[gameIndex].started && <Redirect to="/gameboard" />}
+      {props.gameList[gameIndex].started && <Redirect to={"/gameboard/" + props.gameList[gameIndex].id} />}
       <div>
         {showStart && <button onClick={() => props.start(props.gameList[gameIndex].id, true, props.gameList[gameIndex].players)}>Start Game</button>}
         <Link to="/main-menu">Go back to Main Menu</Link>

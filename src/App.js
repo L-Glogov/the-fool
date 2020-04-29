@@ -104,54 +104,62 @@ const App = ( props ) => {
 
   const LobbyStartHandler = (gameKey, gameStatus, players) => {
     console.log("The game has been started");
-    
-    const startingPlayer = Math.floor(Math.random()*players.length);
+  
     let deck = [];
+    let turnArr = [];
     switch (players.length) {
       case 2:
         deck = [1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,'C','C','M','M'];
+        turnArr = [1,2];
         break;
       case 3: 
         deck = [1,1,1,2,2,2,3,3,3,4,4,4,5,5,5,6,6,6,7,7,7,8,8,8,9,9,9,10,10,10,11,11,11,'C','C','C','M','M','M'];
+        turnArr = [1,2,3];
         break;
       case 4:
         deck = [1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7,8,8,8,8,9,9,9,9,10,10,10,10,11,11,11,11,'C','C','C','C','M','M','M','M'];
+        turnArr = [1,2,3,4];
         break;
       default:
         deck = [1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7,8,8,8,8,9,9,9,9,10,10,10,10,11,11,11,11,'C','C','C','C','M','M','M','M'];
     }
 
-    const rndCard = (deck) => {
-      return deck.splice(Math.floor(Math.random()*deck.length), 1);
+    const pickRnd = (arr) => {
+      return arr.splice(Math.floor(Math.random()*arr.length), 1)[0];
     }
 
-    const rndCardSet = (num, deck) => {
+    const shuffle = (num, arr) => {
       const cardSet = [];
       for (let n = 1; n <= num; n++) {
-        cardSet.push(rndCard(deck));
+        cardSet.push(pickRnd(arr));
       }
       return cardSet;
     }
 
-    const playerState = [];
-    players.forEach((player, index) => {
-      const turn = startingPlayer === index ? true : false;
-      const handCards = rndCardSet(5, deck);
-      const faceDownCards = rndCardSet(4, deck);
-      const faceUpCards = rndCardSet(4, deck);
-      playerState.push({
+    const playersArr = [];
+    players.forEach(player => {
+      const turn = shuffle(1, turnArr)[0];
+      const handCards = shuffle(5, deck);
+      const faceDownCards = shuffle(4, deck);
+      const faceUpCards = shuffle(4, deck);
+      playersArr.push({
         name: player.name,
         id: player.id,
-        isTurn: turn,
+        turn: turn,
         hand: handCards,
         faceDown: faceDownCards,
         faceUp: faceUpCards
       })
     })
 
-    console.log(playerState);
-    console.log(deck);
+    const playerState = {
+      players: playersArr,
+      stack: ["test"],
+      garbage: ["test"]
+    }
 
+
+    props.firebase.addPlayerData(playerState, gameKey);
     props.firebase.updateGameStatus(gameKey, gameStatus);
 
   }
@@ -167,12 +175,13 @@ const App = ( props ) => {
    
   const guarded = <Switch>
     <Route 
-      path="/gameboard" 
+      path="/gameboard/:gameid" 
       exact 
       render={(props) => <GameBoard 
         {...props}
         current={currentGame}
         gameList={gameList}
+        user={authUser}
       />}
     />
     <Route 

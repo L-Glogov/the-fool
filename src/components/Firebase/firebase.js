@@ -42,6 +42,14 @@ class Firebase {
     return this.db.ref().update(updates);
   }
 
+  addPlayerData = (players, gameKey) => {
+    let updates = {};
+    updates['/player-state/' + gameKey] = players;
+    return this.db.ref().update(updates);
+  };
+
+  playerData = () => this.db.ref('player-state');
+
   signUpUser = (email, password) => this.auth.createUserWithEmailAndPassword(email, password);
 
   signInUser = (email, password) => {
