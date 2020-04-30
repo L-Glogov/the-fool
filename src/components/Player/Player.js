@@ -25,7 +25,7 @@ const Player = ( props ) => {
       <ul>
         {faceDownCards}
       </ul>
-      <p>Hand: {props.hand.length}</p>
+      <p>Hand: {props.hand ? props.hand.length : 'none'}</p>
     </div>
   )
 }
@@ -34,7 +34,7 @@ Player.propTypes = {
   name: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   turn: PropTypes.number.isRequired,
-  hand: PropTypes.array.isRequired,
+  hand: PropTypes.array,
   faceDown: PropTypes.array.isRequired,
   faceUp: PropTypes.array.isRequired
 }

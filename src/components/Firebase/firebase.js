@@ -48,6 +48,30 @@ class Firebase {
     return this.db.ref().update(updates);
   };
 
+  updatePlayerData = (gameKey, updatedPlayers) => {
+    let updates = {};
+    updates['/player-state/' + gameKey + '/players'] = updatedPlayers;
+    return this.db.ref().update(updates);
+  };
+
+  // updatePlayerHandData = (gameKey, playerInd, hand) => {
+  //   let updates = {};
+  //   updates['/player-state/' + gameKey + '/players/' + playerInd + '/hand/'] = hand;
+  //   return this.db.ref().update(updates);
+  // };
+
+  updateStack = (gameKey, stack) => {
+    let updates = {};
+    updates['/player-state/' + gameKey + '/stack'] = stack;
+    return this.db.ref().update(updates);
+  }
+
+  updateGarbage = (gameKey, garbage) => {
+    let updates = {};
+    updates['/player-state/' + gameKey + '/garbage'] = garbage;
+    return this.db.ref().update(updates);
+  }
+
   playerData = () => this.db.ref('player-state');
 
   signUpUser = (email, password) => this.auth.createUserWithEmailAndPassword(email, password);

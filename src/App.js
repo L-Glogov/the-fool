@@ -148,14 +148,15 @@ const App = ( props ) => {
         turn: turn,
         hand: handCards,
         faceDown: faceDownCards,
-        faceUp: faceUpCards
+        faceUp: faceUpCards,
+        canFinish: false
       })
     })
 
     const playerState = {
       players: playersArr,
-      stack: ["test"],
-      garbage: ["test"]
+      stack: ["end"],
+      garbage: ["end"]
     }
 
 
