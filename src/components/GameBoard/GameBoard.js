@@ -46,56 +46,58 @@ const GameBoard = ( props ) => {
         stackTop = stackState[stackState.length-counter];
         counter++;
       }
-
-      if (card >= stackTop || stackTop === 'end' || card === 1 || card === 'M') {
-        const newArr= [...playerState[playerInd][cardArr]];
-        newArr.splice(cardInd, 1);
-        if (newArr.length < 1 && playerState[playerInd].faceDown[0] === 'end') { 
-          console.log("Game Over");
-          alert("You Won!");
-          newArr.push('Game Over');
-        } else {
-          if (newArr.length < 1) { newArr.push('end')}
-          let updatedPlayers;
-          if (newArr.indexOf(card) === -1) {
-            updatedPlayers = playerState.map((player, index) => {
-              if (index !== playerInd) {
-                player.turn--;
-              } else {
-                player.turn = playerState.length;
-                player.canFinish = false;
-                player[cardArr] = newArr;
-              }
-              return player;
-            })
+      if (card !== 'C') {
+        if (card >= stackTop || stackTop === 'end' || card === 1 || card === 'M') {
+          const newArr= [...playerState[playerInd][cardArr]];
+          newArr.splice(cardInd, 1);
+          if (newArr.length < 1 && playerState[playerInd].faceDown[0] === 'end') { 
+            console.log("Game Over");
+            alert("You Won!");
+            newArr.push('Game Over');
           } else {
-            updatedPlayers = playerState.map((player, index) => {
-              if (index === playerInd) {
-                player.canFinish = true;
-                player[cardArr] = newArr;
-              }
-              return player;
-            })
-          }
-          const oldStack = [...stackState];
-          props.firebase.updateStack(gameKey, [...oldStack, card]);
-          props.firebase.updatePlayerData(gameKey, updatedPlayers);
-          if (card === 9 && garbageState.length > 1) {
-            const resInd = Math.floor(Math.random() * garbageState.length -1 ) + 1;
-            const resurrect = garbageState[resInd];
-            if (resurrect === "C") {
-              const newGarbage = [...garbageState, ...oldStack.slice(1)];
-              props.firebase.updateStack(gameKey, ['end']);
-              props.firebase.updateGarbage(gameKey, newGarbage);
+            if (newArr.length < 1) { newArr.push('end')}
+            let updatedPlayers;
+            if (newArr.indexOf(card) === -1) {
+              updatedPlayers = playerState.map((player, index) => {
+                if (index !== playerInd) {
+                  player.turn--;
+                } else {
+                  player.turn = playerState.length;
+                  player.canFinish = false;
+                  player[cardArr] = newArr;
+                }
+                return player;
+              })
             } else {
-              let newGarbage = [...garbageState];
-              newGarbage.splice(resInd, 1);
-              props.firebase.updateStack(gameKey, [...oldStack, card, resurrect]);
-              props.firebase.updateGarbage(gameKey, newGarbage);
+              updatedPlayers = playerState.map((player, index) => {
+                if (index === playerInd) {
+                  player.canFinish = true;
+                  player[cardArr] = newArr;
+                }
+                return player;
+              })
             }
-          }
-        } 
+            const oldStack = [...stackState];
+            props.firebase.updateStack(gameKey, [...oldStack, card]);
+            props.firebase.updatePlayerData(gameKey, updatedPlayers);
+            if (card === 9 && garbageState.length > 1) {
+              const resInd = Math.floor(Math.random() * garbageState.length -1 ) + 1;
+              const resurrect = garbageState[resInd];
+              if (resurrect === "C") {
+                const newGarbage = [...garbageState, ...oldStack.slice(1)];
+                props.firebase.updateStack(gameKey, ['end']);
+                props.firebase.updateGarbage(gameKey, newGarbage);
+              } else {
+                let newGarbage = [...garbageState];
+                newGarbage.splice(resInd, 1);
+                props.firebase.updateStack(gameKey, [...oldStack, card, resurrect]);
+                props.firebase.updateGarbage(gameKey, newGarbage);
+              }
+            }
+          } 
+        }
       }
+      
       if (card === 'C') {
         const newArr = [...playerState[playerInd][cardArr]];
         newArr.splice(cardInd, 1);
@@ -144,6 +146,8 @@ const GameBoard = ( props ) => {
         counter++;
       }
       let actionTaken = false;
+      
+    if (card !== 'C') {
       if (card >= stackTop || stackTop === 'end' || card === 1 || card === 'M') {
         actionTaken = true;
         const newFaceDown= [...playerState[playerInd].faceDown];
@@ -183,6 +187,8 @@ const GameBoard = ( props ) => {
           }
         }       
       }
+    }
+     
       if (card === 'C') {
         actionTaken = true;
         const newFaceDown= [...playerState[playerInd].faceDown];
