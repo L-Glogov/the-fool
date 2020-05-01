@@ -5,12 +5,18 @@ import { v4 as uuidv4 } from 'uuid';
 const Player = ( props ) => {
 
   const faceUpCards = props.faceUp.map(card => {
+    if (card === 'end') {
+      return <p key={uuidv4()}>No cards left face-up.</p>
+    }
     return (
       <li key={uuidv4()}>{card}</li>
     )
   })
 
-  const faceDownCards = props.faceUp.map(card => {
+  const faceDownCards = props.faceDown.map(card => {
+    if (card === 'Game Over') {
+      return <p key={uuidv4()}>Game Over. {props.name} has won!</p>
+    }
     return (
       <li key={uuidv4()} card={card}>Face down</li>
     )
@@ -18,14 +24,17 @@ const Player = ( props ) => {
 
   return (
     <div>
-      <p>{props.name}</p>
+      <h2>{props.name}</h2>
+      <h3>Cards in hand: {props.hand[0] !== 'end' ? props.hand.length : 'none'}</h3>
+      <h3>Face Up Cards</h3>
       <ul>
         {faceUpCards}
       </ul>
+      <h3>Face Down Cards</h3>
       <ul>
         {faceDownCards}
       </ul>
-      <p>Hand: {props.hand ? props.hand.length : 'none'}</p>
+      
     </div>
   )
 }

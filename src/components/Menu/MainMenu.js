@@ -50,7 +50,6 @@ const MainMenu = ( props ) => {
             <li>After finishing your face up cards, you play your face down cards, picking them blindly.</li>
             <li>If you cannot play any card that is higher, or equal to, the top card of the stack you take the entire stack to your hand. And must now get rid of your hand again to be able to play the face up or face down cards.</li>
             <li>There are 4 types of special cards in the game. The bomb card can be played on any other card and removes the stack to the graveyard. The magic card can be played on anything and is invisible, which means only the card underneath is important for the next player. The Bishop card adheres to the standard hierarchy rules, but also resureccts a random card from the graveyard (provided that there are any) and places it at the top of the stack. Finally, the fool card can be played over anything, and any card can be played on it.</li>
-            <li>It is important to note that even if you have to pick u the stack, you still get to play a card, thus effectively moving that card into your hand if it was face up or face down on the table.</li>
           </ul>}
           {ruleGameListDisp === 'gameList' && 
           <ul>
