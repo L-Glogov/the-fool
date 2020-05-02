@@ -16,7 +16,7 @@ const Layout = ( props ) => {
       </nav>
       {props.children}
       <footer>
-        <p>&copy; {new Date().getFullYear()} L-Glogov, No Rights Reserved</p>
+        <p>&copy; {new Date().getFullYear()} L-Glogov</p>
       </footer>
     </div>
   )

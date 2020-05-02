@@ -32,6 +32,9 @@ const ActivePlayer = ( props ) => {
 
   const faceDownActive = faceUpActive && props.faceUp[0] === "end";
   const faceDownCards = props.faceDown.map((card, index) => {
+    if (card === 'end') {
+      return <p key={uuidv4()}>No cards left face-up.</p>
+    }
     if (card === 'Game Over') {
       return <p key={uuidv4()}>Game Over. You Won!</p>
     }
