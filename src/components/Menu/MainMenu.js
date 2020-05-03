@@ -24,6 +24,7 @@ const MainMenu = ( props ) => {
       </li>
     )
   })
+  
   return (
     <main>
       <div>

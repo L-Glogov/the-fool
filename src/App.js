@@ -47,14 +47,26 @@ const App = ( props ) => {
 
   // -----MainMenu Handlers-----
 
+
+  /**
+   * The function redirects the user to the lobby if the player is already a part of a given game or if there is still room to join for the player, in which case it updates firebase with the players name and id.
+   *
+   * @param {Object} hist - The current react-router history Object.
+   */
   const MMJoinGameHandler = (hist) => {
     console.log("Join game clicked");
-    let isPlaying = false;
-    currentGame.players.forEach(element => {
-      if (element.id === authUser.uid) {
-        isPlaying = true;
-      }
-    });
+    
+    const checkIfPlaying = (currentUserId) => {
+      let isPlaying = false;
+      currentGame.players.forEach(element => {
+        if (element.id === currentUserId) {
+          isPlaying = true;
+        }
+      });
+      return isPlaying;
+    }
+    const isPlaying = checkIfPlaying(authUser.uid);
+
     if (currentGame.players.length < 4 || isPlaying) {
       if(!isPlaying) {
         const updatedPlayers = [...currentGame.players, {name: authUser.displayName, id: authUser.uid, ready: false}];
@@ -63,13 +75,18 @@ const App = ( props ) => {
         });
         props.firebase.updateGamePlayers(currentGame.id, updatedPlayers);
       }
-    hist.push("/lobby/" + currentGame.id); 
+      hist.push("/lobby/" + currentGame.id); 
     } else {
       alert("The game is full. Please choose another.")
     }
-    
   }
 
+
+  /**
+   * The function creates a new game with the current user as host and updates firebase with the users data. It also redirects the user to the game lobby.
+   *
+   * @param {Object} hist - The current react-router history Object.
+   */
   const MMHostGameHandler = (hist) => {
     console.log("Host game clicked");
     const gameKey = props.firebase.newGameKey();
@@ -102,27 +119,38 @@ const App = ( props ) => {
 
   // -----Lobby Handlers-----
 
-  const LobbyStartHandler = (gameKey, gameStatus, players) => {
+
+
+  /**
+   * The function initilizes the game by changing its gameStatus and creates random starting decks for the players and a random turn order.
+   *
+   * @param {string} gameKey - The id of the current game.
+   * @param {Object[]} players - The players taking part in the game.
+   * @param {string} players[].name The player's name.
+   * @param {string} players[].id The player's id.
+   */
+  const LobbyStartHandler = (gameKey, players) => {
     console.log("The game has been started");
   
-    let deck = [];
-    let turnArr = [];
-    switch (players.length) {
-      case 2:
-        deck = [1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,'C','C','M','M'];
-        turnArr = [1,2];
-        break;
-      case 3: 
-        deck = [1,1,1,2,2,2,3,3,3,4,4,4,5,5,5,6,6,6,7,7,7,8,8,8,9,9,9,10,10,10,11,11,11,'C','C','C','M','M','M'];
-        turnArr = [1,2,3];
-        break;
-      case 4:
-        deck = [1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7,8,8,8,8,9,9,9,9,10,10,10,10,11,11,11,11,'C','C','C','C','M','M','M','M'];
-        turnArr = [1,2,3,4];
-        break;
-      default:
-        deck = [1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7,8,8,8,8,9,9,9,9,10,10,10,10,11,11,11,11,'C','C','C','C','M','M','M','M'];
+    const getDeckArr = (numPlayers) => {
+      const baseDeck = [1,2,3,4,5,6,7,8,9,10,11,'C','M'];
+      let deck = [];
+      for (let n = 1; n <= numPlayers; n++) {
+        deck.push(...baseDeck);
+      }
+      return deck;
     }
+
+    const getTurnArr = (numPlayers) => {
+      let turnArr = [];
+      for (let n = 1; n <= numPlayers; n++) {
+        turnArr.push(n);
+      }
+      return turnArr;
+    }
+
+    const deck = getDeckArr(players.length);
+    const turnArr = getTurnArr(players.length);
 
     const pickRnd = (arr) => {
       return arr.splice(Math.floor(Math.random()*arr.length), 1)[0];
@@ -136,33 +164,39 @@ const App = ( props ) => {
       return cardSet;
     }
 
-    const playersArr = [];
-    players.forEach(player => {
-      const turn = shuffle(1, turnArr)[0];
-      const handCards = shuffle(5, deck);
-      const faceDownCards = shuffle(4, deck);
-      const faceUpCards = shuffle(4, deck);
-      playersArr.push({
-        name: player.name,
-        id: player.id,
-        turn: turn,
-        hand: handCards,
-        faceDown: faceDownCards,
-        faceUp: faceUpCards,
-        canFinish: false
-      })
-    })
+    const createPlayerArr = (gamePlayers) => {
+      const STARTING_HAND_CARDS = 5;
+      const STARTING_FACE_DOWN_CARDS = 4;
+      const STARTING_FACE_UP_CARDS = 4;    
+      const playersArr = [];
 
+      gamePlayers.forEach(player => {
+        const turn = shuffle(1, turnArr)[0];
+        const handCards = shuffle(STARTING_HAND_CARDS, deck);
+        const faceDownCards = shuffle(STARTING_FACE_DOWN_CARDS, deck);
+        const faceUpCards = shuffle(STARTING_FACE_UP_CARDS, deck);
+        playersArr.push({
+          name: player.name,
+          id: player.id,
+          turn: turn,
+          hand: handCards,
+          faceDown: faceDownCards,
+          faceUp: faceUpCards,
+          canFinish: false
+        })
+      })
+      return playersArr;
+    }
+
+    const playersArr = createPlayerArr(players);    
     const playerState = {
       players: playersArr,
       stack: ["end"],
       garbage: ["end"]
     }
 
-
     props.firebase.addPlayerData(playerState, gameKey);
-    props.firebase.updateGameStatus(gameKey, gameStatus);
-
+    props.firebase.updateGameStatus(gameKey, true);
   }
 
   const LobbyUpdatePlayers = (gameKey, updatedPlayers) => {

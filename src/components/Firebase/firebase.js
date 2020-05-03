@@ -20,6 +20,8 @@ class Firebase {
     this.db = app.database();
   }
 
+  /* -------Game List related methods----------- */
+
   newGameKey = () => this.db.ref().child('games').push().key;
 
   addGameToList = (game, gameKey) => {
@@ -42,6 +44,8 @@ class Firebase {
     return this.db.ref().update(updates);
   }
 
+  /*  -------Player State related methods----------- */
+
   addPlayerData = (players, gameKey) => {
     let updates = {};
     updates['/player-state/' + gameKey] = players;
@@ -53,12 +57,6 @@ class Firebase {
     updates['/player-state/' + gameKey + '/players'] = updatedPlayers;
     return this.db.ref().update(updates);
   };
-
-  // updatePlayerHandData = (gameKey, playerInd, hand) => {
-  //   let updates = {};
-  //   updates['/player-state/' + gameKey + '/players/' + playerInd + '/hand/'] = hand;
-  //   return this.db.ref().update(updates);
-  // };
 
   updateStack = (gameKey, stack) => {
     let updates = {};
@@ -73,6 +71,8 @@ class Firebase {
   }
 
   playerData = () => this.db.ref('player-state');
+
+  /*  -------User related methods----------- */
 
   signUpUser = (email, password) => this.auth.createUserWithEmailAndPassword(email, password);
 
