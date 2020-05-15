@@ -43,17 +43,6 @@ const GameBoard = ( props ) => {
 
   /* -----Utility functions for the ActivePlayer handlers ------ */
 
-  /**
-   * These are temporary measures and will be replaced with proper end game mechanics at a later date.
-   *
-   * @param {Object[]} newArr - The current card array.
-   */
-  const gameOver = (newArr) => {
-    console.log("Game Over");
-    alert("You Won!");
-    newArr.push('Game Over');  
-  }
-
   const getCurrPlayerState = () => {
     return tempPlayerState ? tempPlayerState : playerState;
   }
@@ -146,7 +135,7 @@ const GameBoard = ( props ) => {
           newArr.splice(cardInd, 1);
           
           if (newArr.length < 1 && currPlayerState[playerInd].faceDown[0] === 'end') { 
-            gameOver(newArr);
+            props.setWinner(gameKey, currPlayerState[playerInd].name);
           } else {
             if (newArr.length < 1) { newArr.push('end')}
             const oldStack = [...currStackState];            
@@ -200,7 +189,7 @@ const GameBoard = ( props ) => {
         const newArr = [...currPlayerState[playerInd][cardArr]];
         newArr.splice(cardInd, 1);
         if (newArr.length < 1 && currPlayerState[playerInd].faceDown[0] === 'end') { 
-          gameOver(newArr);
+          props.setWinner(gameKey, currPlayerState[playerInd].name);
         } else {
           if (newArr.length < 1) { newArr.push('end')}
           if (newArr.indexOf(card) === -1) {
@@ -243,7 +232,7 @@ const GameBoard = ( props ) => {
           const newFaceDown= [...playerState[playerInd].faceDown];
           newFaceDown.splice(cardInd, 1);
           if (newFaceDown.length < 1) { 
-            gameOver(newFaceDown);
+            props.setWinner(gameKey, playerState[playerInd].name);
           } else {
             const updatedPlayers = getUpdatedPlayersFinish(playerState, playerInd, 'faceDown', newFaceDown);           
             const oldStack = [...stackState];
@@ -273,7 +262,7 @@ const GameBoard = ( props ) => {
         const newFaceDown= [...playerState[playerInd].faceDown];
         newFaceDown.splice(cardInd, 1);
         if (newFaceDown.length < 1) { 
-          gameOver(newFaceDown);
+          props.setWinner(gameKey, playerState[playerInd].name);
         } else {
           const updatedPlayers = getUpdatedPlayersFinish(playerState, playerInd, 'faceDown', newFaceDown); 
           props.firebase.updateGarbage(gameKey, [...stackState, card])
@@ -415,9 +404,11 @@ const GameBoard = ( props ) => {
   
   return (
     <main>
-    {players}
-      <div>Top of the stack: {stackState[stackState.length - 1]}</div>
-      <Link to="/main-menu">Main Menu</Link>
+    {props.gameList[gameIndex].winner.won ? <h2>{props.gameList[gameIndex].winner.name} won!</h2> : <div>
+      {players}
+      <div>Top of the stack: {stackState[stackState.length - 1]}</div>  
+    </div>}
+    <Link to="/main-menu">Main Menu</Link>
     </main>
   );
 }
@@ -426,7 +417,8 @@ GameBoard.propTypes = {
   current: PropTypes.object.isRequired,
   gameList: PropTypes.array.isRequired,
   firebase: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  setWinner: PropTypes.func.isRequired
 }
 
 export default withFirebase(GameBoard);

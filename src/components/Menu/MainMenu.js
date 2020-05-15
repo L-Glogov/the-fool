@@ -17,10 +17,13 @@ const MainMenu = ( props ) => {
           draft.host = game.host;
           draft.players = game.players;
           draft.started = game.started;
+          draft.winner = game.winner;
         })}
         className={styles.gameListItem}>
         {game.host}&apos;s Game {'\u00a0 \u00a0'} Players:{game.players.length}/4
-        Status: {game.started ? 'Ongoing' : 'Lobby'}
+        Status: {game.started 
+        ? (game.winner.won ? 'Finished' : 'Ongoing' )
+        : 'Lobby'}
       </li>
     )
   })

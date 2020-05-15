@@ -44,6 +44,12 @@ class Firebase {
     return this.db.ref().update(updates);
   }
 
+  updateGameWinner = (gameKey, winnerObj) => {
+    let updates = {};
+    updates['/games/' + gameKey + '/winner'] = winnerObj;
+    return this.db.ref().update(updates);
+  }
+
   /*  -------Player State related methods----------- */
 
   addPlayerData = (players, gameKey) => {

@@ -11,9 +11,6 @@ const ActivePlayer = ( props ) => {
       if (card === 'end') {
         return <p key={uuidv4()}>No cards left in hand.</p>
       }
-      if (card === 'Game Over') {
-        return <p key={uuidv4()}>Game Over. You Won!</p>
-      }
       return (
         <li key={uuidv4()} onClick={() => props.activeCards(handActive, card, index, props.playerInd, props.gameId, 'hand')}>{card}</li>
       )
@@ -34,9 +31,6 @@ const ActivePlayer = ( props ) => {
   const faceDownCards = props.faceDown.map((card, index) => {
     if (card === 'end') {
       return <p key={uuidv4()}>No cards left face-up.</p>
-    }
-    if (card === 'Game Over') {
-      return <p key={uuidv4()}>Game Over. You Won!</p>
     }
     return (
       <li key={uuidv4()} card={card} onClick={() => props.activeFaceDown(faceDownActive, card, index, props.playerInd, props.gameId)}>Face down</li>

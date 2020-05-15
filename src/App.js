@@ -31,7 +31,8 @@ const App = ( props ) => {
             host: data[key].host,
             hostId: data[key].hostId,
             players: data[key].players,
-            started: data[key].started
+            started: data[key].started,
+            winner: data[key].winner
           });
         }
         return newList;
@@ -99,18 +100,20 @@ const App = ( props ) => {
         id: authUser.uid,
         ready: false
       }],
-      started: false
+      started: false,
+      winner: {
+        won: false,
+        name: null,
+        time: null
+      }
     }
     setCurrentGame(draft => {
-      draft.id = gameKey;
-      draft.host = authUser.displayName;
-      draft.hostId = authUser.uid;
-      draft.players = [{
-        name: authUser.displayName,
-        id: authUser.uid, 
-        ready: false
-      }];
-      draft.started = false;
+      draft.id = game.id;
+      draft.host = game.host;
+      draft.hostId = game.hostId;
+      draft.players = game.players;
+      draft.started = game.started;
+      draft.winner = game.winner;
     })
 
     props.firebase.addGameToList(game, gameKey);
@@ -118,8 +121,6 @@ const App = ( props ) => {
   }
 
   // -----Lobby Handlers-----
-
-
 
   /**
    * The function initilizes the game by changing its gameStatus and creates random starting decks for the players and a random turn order.
@@ -206,8 +207,24 @@ const App = ( props ) => {
     });
   }
 
-
+  // -----GameBoard Handlers-----
    
+  const GBSetWinner = (gameKey, name) => {
+    console.log('You Won!')
+    const time = Date.now();
+    const winnerObj = {
+      won: true,
+      name,
+      time
+    }
+    props.firebase.updateGameWinner(gameKey, winnerObj)
+    setCurrentGame(draft => {
+      draft.winner.name = name;
+      draft.winner.time = name;
+      draft.winner.won = true;
+    })
+  }
+
   const guarded = <Switch>
     <Route 
       path="/gameboard/:gameid" 
@@ -217,6 +234,7 @@ const App = ( props ) => {
         current={currentGame}
         gameList={gameList}
         user={authUser}
+        setWinner={GBSetWinner}
       />}
     />
     <Route 
