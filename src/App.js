@@ -7,12 +7,12 @@ import PropTypes from 'prop-types';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import Lobby from './components/Lobby/Lobby';
 import { useImmer } from 'use-immer';
-// import { v4 as uuidv4 } from 'uuid';
 import { withFirebase } from './components/Firebase';
 import SignUp from './components/SignUp/SignUp';
 import SignIn from './components/SignIn/SignIn';
 import ResetPass from './components/ResetPass/ResetPass';
 import ChangePass from './components/ChangePass/ChangePass';
+import Home from './components/Home/Home';
 
 const App = ( props ) => {
   
@@ -225,6 +225,8 @@ const App = ( props ) => {
     })
   }
 
+  // -----Routes-----
+
   const guarded = <Switch>
     <Route 
       path="/gameboard/:gameid" 
@@ -290,6 +292,14 @@ const App = ( props ) => {
         user={authUser}
       />}
     />
+    <Route 
+      path="/" 
+      exact 
+      render={(props) => <Home 
+        {...props}
+        user={authUser}
+      />}
+    />
     <Redirect to="/main-menu" />
   </Switch>
 
@@ -335,18 +345,14 @@ const App = ( props ) => {
         user={authUser}
       />}
     />
-    {/* <Route 
-      path="/lobby/:gameid" 
+    <Route 
+      path="/" 
       exact 
-      render={(props) => <Lobby 
+      render={(props) => <Home 
         {...props}
-        start={LobbyStartHandler}
-        gameList={gameList}
-        current={currentGame}
-        updatePlayers={LobbyUpdatePlayers}
         user={authUser}
       />}
-    /> */}
+    />
     <Redirect to="/main-menu" />
   </Switch>
 

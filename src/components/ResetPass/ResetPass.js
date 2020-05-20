@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { withFirebase } from '../Firebase';
 import PropTypes from 'prop-types';
 import { withRouter, Link } from 'react-router-dom';
+import styles from './ResetPass.module.css';
 
 const ResetPass = ( props ) => {
   
@@ -24,9 +25,10 @@ const ResetPass = ( props ) => {
   const isInvalid = email === "";
 
   return (
-    <main>
+    <main className={styles.main}>
       <h1>Reset Password</h1>
-      <form onSubmit={onSubmit}>
+      <Link to="/main-menu" className='home'><i className="fas fa-home"></i></Link>
+      <form onSubmit={onSubmit} className={styles.container}>
         <label htmlFor="email">E-mail: </label>
         <input 
           type="email"
@@ -35,9 +37,8 @@ const ResetPass = ( props ) => {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="peasant@mail.com"
         />
-        <button type="submit" disabled={isInvalid}>Click to receive reset password email.</button>
+        <button type="submit" disabled={isInvalid}>Click to receive reset password email</button>
       </form>
-      <Link to="/main-menu">Go back to Main Menu</Link>
     </main>
   );  
 }

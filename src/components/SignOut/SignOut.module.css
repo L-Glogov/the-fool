@@ -1,0 +1,14 @@
+button.signout {
+  align-self: flex-end;
+  position: absolute;
+  right: 0.7vw;
+  font-size: 1em;
+  bottom: 2vh;
+  background-color: rgba(222, 3, 24, 0.1);
+  border: none;
+}
+button.signout:hover  {
+  color: rgb(255, 193, 7);
+  background-color: rgba(0,0,0, 0.1);
+  cursor: pointer;
+}

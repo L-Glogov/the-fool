@@ -1,19 +1,27 @@
 import React from 'react';
 import SignOut from '../SignOut/SignOut';
 import PropTypes from 'prop-types';
-// import styles from './Layout.module.css';
+import background from '../../assets/back2.jpg';
+import styles from './Layout.module.css';
 
 const Layout = ( props ) => {
 
-  return (
-    <div>
-      <h1>The Fool</h1>
-      {props.signedIn && <SignOut />}
-      <nav>
-        <ul>
+  const backStyle = {
+    minWidth: "100vw",
+    minHeight: "100vh",
+    backgroundImage: "url(" + background + ")",
+    position: "fixed",
+    backgroundAttachment: "fixed",
+    backgroundSize: "cover",
+    backgroundPositiomn: "center"
+  }
 
-        </ul>
-      </nav>
+  return (
+    <div style={backStyle}>
+      <div className={styles.heading}>
+        <h1>The Fool</h1>
+        {props.signedIn && <SignOut />}
+      </div>     
       {props.children}
       <footer>
         <p>&copy; {new Date().getFullYear()} L-Glogov</p>

@@ -8,6 +8,7 @@ const MainMenu = ( props ) => {
   const [ruleGameListDisp, setRuleGameListDisp] = useState('rules');
 
   const availableGames = props.gameList.map(game => {
+    const bold = game.id === props.current.id ? 'bold' : 'standard';
     return (
       <li 
         key={game.id} 
@@ -19,33 +20,34 @@ const MainMenu = ( props ) => {
           draft.started = game.started;
           draft.winner = game.winner;
         })}
-        className={styles.gameListItem}>
-        {game.host}&apos;s Game {'\u00a0 \u00a0'} Players:{game.players.length}/4
-        Status: {game.started 
-        ? (game.winner.won ? 'Finished' : 'Ongoing' )
-        : 'Lobby'}
+        className={styles.gameListItem + ' ' + bold}>
+          <div className={styles.gameitem}>
+            <p>{game.host}&apos;s Game {'\u00a0 \u00a0'} </p>
+            <p>Players:{game.players.length}/4</p>
+            <p>Status: {game.started 
+              ? (game.winner.won ? 'Finished' : 'Ongoing' )
+              : 'Lobby'}</p>
+          </div>
       </li>
     )
   })
   
   return (
-    <main>
-      <div>
+    <main className={styles.main}>
+      <div className={styles.leftcont}>
         {props.user 
           ? <div>
               <p>You are signed in as {props.user.displayName}</p>
-              {props.current.id !== null && <button onClick={() => props.join(props.history)}>Join Game</button>}
               <button onClick={() => props.host(props.history)}>Host Game</button>
+              {props.current.id !== null && <button onClick={() => props.join(props.history)}>Join Game</button>}
+              {props.current.id !== null && <p className={styles.chosengame}>Chosen game: {props.current.host}&apos;s Game {'\u00a0 \u00a0'}</p>}
             </div> 
-          : <Link to="/signin">Sign in to start!</Link>
+          : <Link to="/signin" className={styles.link}>Sign in to start!</Link>
         } 
       </div>
-      <div>
-        <div>
-          <button onClick={() => setRuleGameListDisp('rules')}>Rules</button>
-          <button onClick={() => setRuleGameListDisp('gameList')}>Open Games</button>
-        </div>
-        <div>
+      <div className={styles.rightcont}>
+        
+        <div className={styles.ruleslist}>
           {ruleGameListDisp === 'rules' && 
           <ul>
             <li>You start with 13 cards. 4 cards face down which nobody sees. 4 cards face up which everybody can see and 5 cards in your hand which only you can see.</li>
@@ -58,7 +60,11 @@ const MainMenu = ( props ) => {
           {ruleGameListDisp === 'gameList' && 
           <ul>
             {availableGames}
-          </ul>}
+          </ul>}     
+        </div>
+        <div> 
+          {ruleGameListDisp === 'gameList' && <button onClick={() => setRuleGameListDisp('rules')}>Rules</button>}
+          {ruleGameListDisp === 'rules' && <button onClick={() => setRuleGameListDisp('gameList')}>Open Games</button>}
         </div>
       </div>
     </main>

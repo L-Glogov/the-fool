@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, withRouter, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-// import styles from './Lobby.module.css';
+import styles from './Lobby.module.css';
 
 const Lobby = ( props ) => {
 
@@ -25,10 +25,12 @@ const Lobby = ( props ) => {
     readyPlayer[index].ready = !isReady;
     return (
       <li key={item.id}>
-        {isHost && index !== 0 && <button onClick={() => props.updatePlayers(props.gameList[gameIndex].id, withoutPlayer)}>Kick Player</button>}
-        <p>{item.name}</p>
-        {isPlayer && <button onClick={() =>props.updatePlayers(props.gameList[gameIndex].id, readyPlayer)}>Ready</button>}
-        {item.ready ? <p>Ready</p> : <p>Not ready</p>}
+        <div className={styles.grid}>
+          <p>{isHost && index !== 0 && <button onClick={() => props.updatePlayers(props.gameList[gameIndex].id, withoutPlayer)} className={styles.kick}><i className="fas fa-user-slash"></i></button>}</p>
+          <p>{item.name}</p>
+          <p>Status: {item.ready ? "Ready": "Not ready"}</p> 
+          <p>{isPlayer && <button className={styles.check} onClick={() =>props.updatePlayers(props.gameList[gameIndex].id, readyPlayer)}>{item.ready ? <i className="fas fa-check"></i>: <i className="fas fa-times"></i>}</button>}</p>       
+        </div>
       </li>
     )
   })
@@ -41,16 +43,20 @@ const Lobby = ( props ) => {
   })
   
   return (
-    <main>
+    <main className={styles.main}>
+      <h1>Lobby</h1>
+      <Link to="/main-menu" className='home'><i className="fas fa-home"></i></Link> 
       {props.gameList[gameIndex].started && <Redirect to={"/gameboard/" + props.gameList[gameIndex].id} />}
-      <div>
-        {showStart && <button onClick={() => props.start(props.gameList[gameIndex].id, props.gameList[gameIndex].players)}>Start Game</button>}
-        <Link to="/main-menu">Go back to Main Menu</Link>
+      <div className={styles.container}>
+        <div className={styles.start}>         
+          <h3 className={styles.players}>Players: {props.gameList[gameIndex].players.length}/4</h3>
+          {showStart && <button onClick={() => props.start(props.gameList[gameIndex].id, props.gameList[gameIndex].players)}>Start Game</button>}
+        </div>
+        <ul>         
+          {players}
+        </ul>
       </div>
-      <div>
-        <h3>Players: {props.gameList[gameIndex].players.length}/4</h3>
-         {players}
-      </div>
+      
     </main>
   );
 }

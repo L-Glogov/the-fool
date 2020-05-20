@@ -1,38 +1,64 @@
-.App {
+/* #ffc107 rgb(255, 193, 7)
+#de0318  rgb(222, 3, 24)
+#fce9cc  rgb(252, 233, 204)
+font-family: 'MedievalSharp', cursive;
+font-family: 'Rouge Script', cursive;
+font-family: 'Signika', sans-serif;400/700
+*/
+
+* {
+  box-sizing: border-box;
+  font-family: 'MedievalSharp', cursive;
+}
+
+h1,h2,h3,h4 {
+  color: black;
+  text-shadow: 2px 2px #de0318;
+  font-weight: 700;
+}
+
+input {
+  background-color: rgb(252, 233, 204);
+  font-size: 1em;
+}
+
+button {
+  color: black;
+  font-size: 1em;
+  text-decoration: none;
+  border: 2px ridge rgb(255, 193, 7);
+  background-color: rgba(222, 3, 24, 0.1);
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+button:hover {
+  color: rgb(222, 3, 24);
+  background-color: rgba(0,0,0, 0.05);
+  cursor: pointer;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.home {
+  position: absolute;
+  top: 2vh;
+  left: 1vw;
+  font-size: 2rem;
+  color: black;
+  text-shadow: 2px 2px #de0318;
+  text-decoration: none;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.bold {
+  font-weight: bold;
 }
 
-.App-link {
-  color: #61dafb;
+button:disabled {
+  color: gray;
+  border: 2px ridge darkgray;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+button:disabled:hover {
+  color: gray;
+  background-color: rgba(222, 3, 24, 0.1);
+  border: 2px ridge darkgray;
+  cursor: not-allowed;
 }

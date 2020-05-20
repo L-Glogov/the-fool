@@ -1,4 +1,94 @@
+main.main {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 88vh;
+}
+
+div.leftcont {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.leftcont p {
+  font-size: 2em;
+}
+
+.leftcont button {
+  font-size: 2em;
+  margin-right: 10px;
+}
+
+div.rightcont {
+  width: 50%;
+  background-color: rgba(252, 233, 204, 0.4);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-right: 50px;
+  border-radius: 10px;
+  height: 80%;
+}
+
+.rightcont button {
+  font-size: 1.2em;
+}
+
+.ruleslist {
+  width: 100%;
+  height: 90%;
+  overflow: scroll;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.rightcont ul {
+  font-size: 1.2em;
+}
+
+.rightcont li {
+  margin-bottom: 10px;
+}
+
+div.gameitem {
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+  grid-template-rows: auto;
+  column-gap: 10px;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+p.chosengame {
+  font-size: 1.5em;
+}
+
 li.gameListItem:hover {
   font-weight: bold;
+  cursor: pointer;
+}
+
+.link {
+  color: black;
+  font-size: 2em;
+  padding: 5px;
+  text-decoration: none;
+  border: 2px ridge rgb(255, 193, 7);
+  background-color: rgba(222, 3, 24, 0.1);
+  text-align: center;
+  display: block;
+
+}
+
+.link:hover {
+  color: rgb(222, 3, 24);
+  background-color: rgba(0,0,0, 0.05);
   cursor: pointer;
 }

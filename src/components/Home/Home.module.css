@@ -1,0 +1,57 @@
+main.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 88vh;
+}
+
+div.loggedin {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(252, 233, 204, 0.4);
+  padding: 40px;
+  border-radius: 10px;
+}
+
+.loggedin p {
+  font-size: 2em;
+  color: black;
+  text-shadow: 1px 1px rgb(255, 193, 7);
+  margin-top: 0;
+}
+
+.link {
+  color: black;
+  font-size: 1.5em;
+  text-decoration: none;
+  border: 5px ridge rgb(255, 193, 7);
+  background-color: rgba(222, 3, 24, 0.1);
+  height: 100px;
+  width: 200px;
+  text-align: center;
+  padding-top: 34px;
+  margin-bottom: 25px;
+}
+
+.link:last-child {
+  margin-bottom: 0;
+}
+
+.link:hover {
+  color: rgb(222, 3, 24);
+  background-color: rgba(0,0,0, 0.05);
+  cursor: pointer;
+}
+
+.loggedout {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(252, 233, 204, 0.4);
+  padding: 60px;
+  border-radius: 10px;
+}

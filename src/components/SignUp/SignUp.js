@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { withFirebase } from '../Firebase';
 import PropTypes from 'prop-types';
 import { withRouter, Link } from 'react-router-dom';
+import styles from './SignUp.module.css';
 
 const SignUp = ( props ) => {
   
@@ -10,42 +11,39 @@ const SignUp = ( props ) => {
   const [password, setPass] = useState('');
   const [confPass, setConfPass] = useState('');
 
+  const isInvalid = 
+  password !== confPass ||
+  password === "" ||
+  email === "";
+
   const onSubmit = (e) => {
+    e.preventDefault();
     props.firebase.signUpUser(email, password)
-    .then(authUser => {
+    .then(async authUser => {
       authUser.displayName = username;
-      props.firebase.user(authUser.user.uid).set({
-        username,
-        email
+      await props.firebase.user(authUser.user.uid).set({
+        username
       })
-    })
-    .then(() => {
-      props.firebase.updateUsername(username);
+      await props.firebase.updateUsername(username);
     })
     .then(()=> {
       setUsername('Peasant');
       setEmail('');
       setPass('');
       setConfPass('');
-      props.history.push('/');
+      props.history.push('/main-menu');
     })
     .catch(error => {
       console.error(error);
       alert(error.message);
     })
-    
-    e.preventDefault();
   }
 
-  const isInvalid = 
-    password !== confPass ||
-    password === "" ||
-    email === "";
-
   return (
-    <main>
+    <main className={styles.main}>
       <h1>Sign Up</h1>
-      <form onSubmit={onSubmit}>
+      <Link to="/main-menu" className='home'><i className="fas fa-home"></i></Link>
+      <form onSubmit={onSubmit} className={styles.container}>
         <label htmlFor="username">Username: </label>
         <input 
           type="text"
@@ -83,7 +81,6 @@ const SignUp = ( props ) => {
         />
         <button type="submit" disabled={isInvalid}>Sign Up</button>
       </form>
-      <Link to="/main-menu">Go back to Main Menu</Link>
     </main>
   );  
 }

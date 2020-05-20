@@ -1,0 +1,62 @@
+main.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 88vh;
+}
+
+div.container {
+  background-color: rgba(252, 233, 204, 0.4);
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  width: 40vw;
+}
+
+div.container li {
+  list-style: none;
+}
+
+.players {
+  text-shadow: none;
+  margin-bottom: 40px;
+}
+
+.kick {
+  cursor: pointer;
+  height: 22px;
+  width: 40px;
+}
+
+.start {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 50px;
+}
+
+.check {
+  height: 22px;
+  width: 40px;
+}
+
+.start h3 {
+  margin-bottom: auto;
+  margin-top: auto;
+}
+
+.start button {
+  font-size: 1.5em;
+}
+
+div.grid {
+  display: grid;
+  grid-template-columns: 10% 30% 30% 30%;
+  grid-template-rows: auto;
+  column-gap: 10px;
+  margin-bottom: 0;
+  margin-top: 0;
+}

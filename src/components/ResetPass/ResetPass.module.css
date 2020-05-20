@@ -1,0 +1,23 @@
+main.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 88vh;
+  
+}
+
+form.container {
+  background-color: rgba(252, 233, 204, 0.4);
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.container label, .container input{
+  margin-bottom: 10px;
+}
+
+.container button {
+  margin-top: 10px;
+}

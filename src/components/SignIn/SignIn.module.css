@@ -1,0 +1,48 @@
+main.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 88vh;
+  
+}
+
+div.container {
+  background-color: rgba(252, 233, 204, 0.4);
+  padding: 40px;
+  border-radius: 10px;
+}
+
+.container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.container label, .container input{
+  margin-bottom: 10px;
+}
+
+.noacc p {
+  margin-bottom: 8px;
+}
+
+.forgotpass p {
+  margin-bottom: 8px;
+}
+
+.link {
+  color: black;
+  font-size: 1em;
+  text-decoration: none;
+  border: 2px ridge rgb(255, 193, 7);
+  background-color: rgba(222, 3, 24, 0.1);
+  text-align: center;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.link:hover {
+  color: rgb(222, 3, 24);
+  background-color: rgba(0,0,0, 0.05);
+  cursor: pointer;
+}
