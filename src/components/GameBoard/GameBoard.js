@@ -38,7 +38,7 @@ const GameBoard = ( props ) => {
       setStackState(data[gameId].stack);
       setGarbageState(data[gameId].garbage);
     });
-  }, [props.firebase, setPlayerState, setStackState, setGarbageState]);
+  }, [props.firebase, setPlayerState, setStackState, setGarbageState, gameId]);
 
 
   /* -----Utility functions ------ */
