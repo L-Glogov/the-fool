@@ -1,7 +1,7 @@
 import React from 'react';
 import SignOut from '../SignOut/SignOut';
 import PropTypes from 'prop-types';
-import background from '../../assets/back2.jpg';
+import background from '../../assets/background.jpg';
 import styles from './Layout.module.css';
 
 const Layout = ( props ) => {

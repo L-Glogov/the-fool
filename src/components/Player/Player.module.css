@@ -1,0 +1,138 @@
+.first {
+  position: absolute;
+  top: 10vh;
+  left: 30%;
+  width: 40%;
+  height: 25vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.first .namehand {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  font-weight: bold;
+}
+
+.first .namehand p {
+  margin-right: 150px;
+}
+
+.first .faceup {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  list-style: none;
+  top: 15%;
+  left: 2%;
+}
+
+.first .faceup li {
+  margin-right: 1.5vw;
+}
+
+.first .facedown {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  list-style: none;
+  top: 19%;
+}
+
+.first .facedown li {
+  margin-right: 1.5vw;
+}
+
+.second {
+  position: absolute;
+  top: 15vh;
+  left: 5vw;
+  width: 20vw;
+  height: 60vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.second .namehand {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  font-weight: bold;
+}
+
+.second .namehand p {
+  margin-bottom: 0;
+}
+
+.second .faceup {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  list-style: none;
+  top: 20%;
+  left: 2%;
+}
+
+.second .faceup li {
+  margin-bottom: 15px;
+}
+
+.second .facedown {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  list-style: none;
+  top: 22%;
+}
+
+.second .facedown li {
+  margin-bottom: 15px;
+}
+
+
+.third {
+  position: absolute;
+  top: 15vh;
+  right: 8vw;
+  width: 20vw;
+  height: 60vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.third .namehand {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  font-weight: bold;
+}
+
+.third .namehand p {
+  margin-bottom: 0;
+}
+
+.third .faceup {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  list-style: none;
+  top: 20%;
+  left: 2%;
+}
+
+.third .faceup li {
+  margin-bottom: 15px;
+}
+
+.third .facedown {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  list-style: none;
+  top: 22%;
+}
+
+.third .facedown li {
+  margin-bottom: 15px;
+}

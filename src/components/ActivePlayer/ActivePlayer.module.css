@@ -1,0 +1,62 @@
+div.container {
+  position: absolute;
+  bottom: 10vh;
+  left: 30%;
+  width: 40%;
+  height: 25vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.turn {
+  display: flex;
+  flex-direction: row;
+  font-weight: bold;
+  align-items: center;
+}
+
+.turn p {
+  margin-right: 2vw;
+}
+
+.faceup {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 16%;
+  left: 2%;
+}
+
+.faceup ul {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+}
+
+.faceup li {
+  margin-right: 1.5vw;
+}
+
+.facedown {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 20%;
+}
+
+.facedown ul {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+}
+
+.facedown li {
+  margin-right: 1.5vw;
+}
+
+.options {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  bottom: 2%;
+}

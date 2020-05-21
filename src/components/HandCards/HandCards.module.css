@@ -1,0 +1,39 @@
+div.backdrop {
+  width: 120vw;
+  height: 120vh;
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  background-color: rgba(0,0,0,0.5);
+}
+
+div.modal {
+  position: fixed;
+  z-index: 500;
+  background-color: rgb(252, 233, 204);
+  width: 70%;
+  border: 2px ridge rgb(255, 193, 7);
+  box-shadow: 1px 1px 1px black;
+  padding: 18px;
+  left: 15%;
+  top: 60%;
+  transition: all 0.4s ease-out;
+}
+
+.modal h3 {
+  text-shadow: none;
+}
+
+.modal ul {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+  overflow: scroll;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.modal li {
+  margin-right: 15px;
+}

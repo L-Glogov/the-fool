@@ -51,6 +51,15 @@ button:hover {
   font-weight: bold;
 }
 
+.invisible {
+  opacity: 0.3;
+}
+
+.namefontsize {
+  font-size: 1.2em;
+  text-shadow: 1px 1px rgb(222, 3, 24);;
+}
+
 button:disabled {
   color: gray;
   border: 2px ridge darkgray;
@@ -61,4 +70,80 @@ button:disabled:hover {
   background-color: rgba(222, 3, 24, 0.1);
   border: 2px ridge darkgray;
   cursor: not-allowed;
+}
+
+.active:hover {
+  cursor: pointer;
+  border: 2px ridge rgb(255, 193, 7);
+}
+
+.card1, .card2, .card3, .card4, .card5, .card6, .card7, .card8, .card9, .card10, .card11, .cardC, .cardM, .cardback, .cardend {
+  height: 13.1vh;
+  width: 8.6875vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: 10;
+}
+
+.card1 {
+  background-image: url('./assets/fool.png');
+}
+
+.card2 {
+  background-image: url('./assets/peasant.png');
+}
+
+.card3 {
+  background-image: url('./assets/thug.png');
+}
+
+.card4 {
+  background-image: url('./assets/innkeeper.png');
+}
+
+.card5 {
+  background-image: url('./assets/merchant.png');
+}
+
+.card6 {
+  background-image: url('./assets/burgher.png');
+}
+
+.card7 {
+  background-image: url('./assets/knight.png');
+}
+
+.card8 {
+  background-image: url('./assets/baron.png');
+}
+
+.card9 {
+  background-image: url('./assets/bishop.png');
+}
+
+.card10 {
+  background-image: url('./assets/prince.png');
+}
+
+.card11 {
+  background-image: url('./assets/king.png');
+}
+
+.cardC {
+  background-image: url('./assets/bomb.png');
+}
+
+.cardM {
+  background-image: url('./assets/mage.png');
+}
+
+.cardback {
+  background-image: url('./assets/back.png');
+  z-index: 5;
+}
+
+.cardend {
+  border: 1px solid black;
+  background-color: rgba(0,0,0, 0.15);
+  margin-right: 15vw;
 }

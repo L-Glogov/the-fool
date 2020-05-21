@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { withFirebase } from '../Firebase';
 import Player from '../Player/Player';
 import ActivePlayer from '../ActivePlayer/ActivePlayer';
-// import styles from './GameBoard.module.css';
+import styles from './GameBoard.module.css';
 
 const GameBoard = ( props ) => {
 
@@ -41,7 +41,7 @@ const GameBoard = ( props ) => {
   }, [props.firebase, setPlayerState, setStackState, setGarbageState]);
 
 
-  /* -----Utility functions for the ActivePlayer handlers ------ */
+  /* -----Utility functions ------ */
 
   const getCurrPlayerState = () => {
     return tempPlayerState ? tempPlayerState : playerState;
@@ -359,7 +359,7 @@ const GameBoard = ( props ) => {
     setTempPlayerState(null);
   }
 
-
+  const playerDispClasses = ['first', 'second', 'third'];
   const players = playerState.map((item, index) => {
     if (item.id === props.user.uid) {
       return (
@@ -381,6 +381,7 @@ const GameBoard = ( props ) => {
         />
       )
     }
+    const playerDispClass = playerDispClasses.shift();
     return (
       <Player 
         name={item.name}
@@ -391,24 +392,52 @@ const GameBoard = ( props ) => {
         hand={item.hand}
         faceDown={item.faceDown}
         faceUp={item.faceUp}
+        playerDispClass={playerDispClass}
       />
     )
   })
 
-  console.log(playerState);
-  console.log("stack" + stackState);
-  console.log("garbage" + garbageState);
-  console.log("tempgarbage" + tempGarbageState);
-  console.log("tempstack" + tempStackState);
-  console.log("tempplayer" + tempPlayerState);
-  
+  const turnOrder = [...playerState].sort((a, b) => {
+    return a.turn - b.turn
+  }).map( item => {
+    return (
+      <li key={item.id}>{item.name}</li>
+    )
+  })
+
+  const currentTurn = [...playerState].filter(item => {
+    return item.turn === 1;
+  }).map(item => {
+    return item.name;
+  })
+
+  const stackLength = getCurrStackState().length - 1;
+  const garbageLength = getCurrGarbageState().length - 1;
+  const stackTop = getStackTop(getCurrStackState());
+
+  // console.log(playerState);
+  // console.log("stack" + stackState);
+  // console.log("garbage" + garbageState);
+  // console.log("tempgarbage" + tempGarbageState);
+  // console.log("tempstack" + tempStackState);
+  // console.log("tempplayer" + tempPlayerState);
+   
   return (
-    <main>
-    {props.gameList[gameIndex].winner.won ? <h2>{props.gameList[gameIndex].winner.name} won!</h2> : <div>
-      {players}
-      <div>Top of the stack: {stackState[stackState.length - 1]}</div>  
-    </div>}
-    <Link to="/main-menu">Main Menu</Link>
+    <main className={styles.main}>
+      <Link to="/main-menu" className='home'><i className="fas fa-home"></i></Link> 
+      {props.gameList[gameIndex].winner.won ? <h2>{props.gameList[gameIndex].winner.name} won!</h2> : <div>
+        {players}
+        <div className={'card' + stackTop}></div>  
+      </div>}
+      <div className={styles.info}>
+        <h3>Current Turn: {currentTurn}</h3>
+        <h3>Turn Order:</h3>
+        <ol>
+          { turnOrder }
+        </ol>
+        <h3>Cards in graveyard: {garbageLength}</h3>
+        <h3>Cards in stack: {stackLength}</h3>
+      </div>
     </main>
   );
 }

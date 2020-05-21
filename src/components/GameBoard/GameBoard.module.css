@@ -1,0 +1,21 @@
+main.main {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 88vh;
+}
+
+div.info {
+  position: absolute;
+  right: 4vw;
+  top: 40vh;
+  background-color: rgba(252, 233, 204, 0.4);
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.info h3 {
+  font-weight: bold;
+  text-shadow: none;
+}

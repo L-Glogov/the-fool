@@ -1,37 +1,55 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
+import styles from './Player.module.css';
 
 const Player = ( props ) => {
 
   const faceUpCards = props.faceUp.map(card => {
     if (card === 'end') {
-      return <p key={uuidv4()}>No cards left face-up.</p>
+      return <p key={uuidv4()}></p>
     }
     return (
-      <li key={uuidv4()}>{card}</li>
+      <li key={uuidv4()} className={'card' + card}></li>
     )
   })
 
   const faceDownCards = props.faceDown.map(card => {
     return (
-      <li key={uuidv4()} card={card}>Face down</li>
+      <li key={uuidv4()} card={card} className='cardback'></li>
     )
   })
 
+  let playerClass;
+  switch (props.playerDispClass) {
+    case 'first':
+      playerClass = styles.first;
+      break;
+  
+    case 'second':
+      playerClass = styles.second;
+      break;
+
+    case 'third':
+      playerClass = styles.third;
+      break;
+
+    default:
+      break;
+  }
+
   return (
-    <div>
-      <h2>{props.name}</h2>
-      <h3>Cards in hand: {props.hand[0] !== 'end' ? props.hand.length : 'none'}</h3>
-      <h3>Face Up Cards</h3>
-      <ul>
+    <div className={playerClass}>
+      <div className={styles.namehand}>
+        <p className='namefontsize'>{props.name}</p>
+        <p>Cards in hand: {props.hand[0] !== 'end' ? props.hand.length : 'none'}</p>
+      </div>    
+      <ul className={styles.faceup}>
         {faceUpCards}
       </ul>
-      <h3>Face Down Cards</h3>
-      <ul>
+      <ul className={styles.facedown}>
         {faceDownCards}
-      </ul>
-      
+      </ul>    
     </div>
   )
 }
@@ -42,7 +60,8 @@ Player.propTypes = {
   turn: PropTypes.number.isRequired,
   hand: PropTypes.array,
   faceDown: PropTypes.array.isRequired,
-  faceUp: PropTypes.array.isRequired
+  faceUp: PropTypes.array.isRequired,
+  playerDispClass: PropTypes.string.isRequired
 }
 
 export default Player;
