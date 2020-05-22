@@ -6,6 +6,7 @@ The project is currently at v.1.0.
 ## About
 
 This is a multiplayer game not unsimillar to a card game known to some as "Village Idiot". Unfortuantely, as of now there is no AI implemented, so it is only possible to play online multiplayer
+It is possible to see how the game works here: https://upbeat-raman-c3e3bb.netlify.app
 
 ### Game Rules
 
