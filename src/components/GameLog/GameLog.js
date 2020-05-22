@@ -58,7 +58,7 @@ const GameLog = ( props ) => {
       )
     } else if (item.name === 'bishopcard') {
       return (
-        <li>The bishop card has resurrected the {card}.</li>
+        <li>{item.player} played the bishop card,<br/> which has resurrected the {card}.</li>
       )
     } else if (item.name === 'takesstack') {
       return (

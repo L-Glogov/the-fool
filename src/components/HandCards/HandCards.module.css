@@ -28,8 +28,9 @@ div.modal {
 .modal ul {
   display: flex;
   flex-direction: row;
+  align-items: flex-start;
+  width: 100%;
   list-style: none;
-  overflow: scroll;
   overflow-x: auto;
   overflow-y: hidden;
 }

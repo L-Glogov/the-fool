@@ -186,6 +186,7 @@ const GameBoard = ( props ) => {
                   props.firebase.updateGarbage(gameKey, newGarbage);
                   props.firebase.updateLog(gameKey, [...oldLog, {
                     name: 'bishopcard',
+                    player: playerName,
                     card: resurrect
                   }]);
                   setTempStackState(null);
@@ -196,6 +197,7 @@ const GameBoard = ( props ) => {
                   setTempGarbageState(newGarbage);
                   setTempLogState([...oldLog, {
                     name: 'bishopcard',
+                    player: playerName,
                     card: resurrect
                   }])
                 }                
@@ -207,6 +209,7 @@ const GameBoard = ( props ) => {
                   props.firebase.updateGarbage(gameKey, newGarbage);
                   props.firebase.updateLog(gameKey, [...oldLog, {
                     name: 'bishopcard',
+                    player: playerName,
                     card: resurrect
                   }]);
                   setTempStackState(null);
@@ -217,6 +220,7 @@ const GameBoard = ( props ) => {
                   setTempGarbageState(newGarbage);
                   setTempLogState([...oldLog, {
                     name: 'bishopcard',
+                    player: playerName,
                     card: resurrect
                   }])
                 }               
@@ -311,6 +315,7 @@ const GameBoard = ( props ) => {
               }
               props.firebase.updateLog(gameKey, [...oldLog, {
                 name: 'bishopcard',
+                player: playerName,
                 card: resurrect
               }]);
             }
@@ -413,10 +418,9 @@ const GameBoard = ( props ) => {
    * Handles the mechanics of the active user clicking on the "Finish Turn" button once at least one card has been played. Note: The player, stack and garbage state are all updated regardless of the stack being present, due to a potential situation of a card (which had a multiple in the same array) being played by the active player before the "take stack" button was clicked - a rare situation, but possible.
    *
    * @param {number} playerInd - The index of the active player in the playerState array.
-   * @param {string} playerName - The name of the active player.
    * @param {string} gameKey - The id of the active game.
    */
-  const finishTurnHandler = (playerInd, playerName, gameKey) => {
+  const finishTurnHandler = (playerInd, gameKey) => {
     
     const currPlayerState = getCurrPlayerState();
     const currStackState = getCurrStackState();

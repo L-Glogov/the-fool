@@ -12,7 +12,7 @@ const HandCards = ( props ) => {
         return <p key={uuidv4()}>No cards left in hand.</p>
       }
       return (
-        <li key={uuidv4()} className={'card' + card + handHoverClass} onClick={() => props.activeCards(props.handActive, card, index, props.playerInd, props.name, props.gameId, 'hand')}></li>
+        <li key={uuidv4()}><div className={'card' + card + handHoverClass} onClick={() => props.activeCards(props.handActive, card, index, props.playerInd, props.name, props.gameId, 'hand')}></div></li>
       )
     })
   }
