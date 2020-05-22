@@ -5,6 +5,7 @@ import { withFirebase } from '../Firebase';
 import Player from '../Player/Player';
 import ActivePlayer from '../ActivePlayer/ActivePlayer';
 import styles from './GameBoard.module.css';
+import GameLog from '../GameLog/GameLog';
 
 const GameBoard = ( props ) => {
 
@@ -13,9 +14,14 @@ const GameBoard = ( props ) => {
   const [playerState, setPlayerState] = useState([]);
   const [stackState, setStackState] = useState([]);
   const [garbageState, setGarbageState] = useState([]);
+  const [logState, setLogState] = useState([]);
+
+  //Note: The temporary states are for local data in case the active player can play multiples of a given card. This system enables him/her to have a reactive experience locally, while not alerting the other players to his actions before finishing the turn. By failing to implement this feature, if the active player would choose to play only one card of a multiple, then the other players would know that he/she still has at least one other card of the same value and would thus gain an unfair advantage.
+
   const [tempPlayerState, setTempPlayerState] = useState(null);
   const [tempStackState, setTempStackState] = useState(null);
   const [tempGarbageState, setTempGarbageState] = useState(null);
+  const [tempLogState, setTempLogState] = useState(null);
 
   useEffect(() => {
     props.firebase.playerData().on('value', snapshot => {
@@ -37,8 +43,9 @@ const GameBoard = ( props ) => {
       })
       setStackState(data[gameId].stack);
       setGarbageState(data[gameId].garbage);
+      setLogState(data[gameId].log);
     });
-  }, [props.firebase, setPlayerState, setStackState, setGarbageState, gameId]);
+  }, [props.firebase, setPlayerState, setStackState, setGarbageState, setLogState, gameId]);
 
 
   /* -----Utility functions ------ */
@@ -53,6 +60,10 @@ const GameBoard = ( props ) => {
 
   const getCurrGarbageState = () => {
     return tempGarbageState ? tempGarbageState : garbageState;
+  }
+
+  const getCurrLogState = () => {
+    return tempLogState ? tempLogState : logState;
   }
 
   const getStackTop = (currStackState) => {
@@ -119,14 +130,16 @@ const GameBoard = ( props ) => {
    * @param {string|number} card - The value of the card that was clicked.
    * @param {number} cardInd - The index of the card clicked.
    * @param {number} playerInd - The index of the active player in the playerState array.
+   * @param {string} playerName - The name of the active player.
    * @param {string} gameKey - The id of the active game.
    * @param {string} cardArr - The name of the given card array of which the card was clicked.
    */
-  const activeCardArrHandler = (active, card, cardInd, playerInd, gameKey, cardArr) => {
+  const activeCardArrHandler = (active, card, cardInd, playerInd, playerName, gameKey, cardArr) => {
     if (active) {
       const currPlayerState = getCurrPlayerState();
       const currStackState = getCurrStackState();
       const currGarbageState = getCurrGarbageState();
+      const currLogState = getCurrLogState();
       const stackTop = getStackTop(currStackState);
                 
       if (card !== 'C') {
@@ -138,19 +151,29 @@ const GameBoard = ( props ) => {
             props.setWinner(gameKey, currPlayerState[playerInd].name);
           } else {
             if (newArr.length < 1) { newArr.push('end')}
-            const oldStack = [...currStackState];            
+            const oldStack = [...currStackState];
+            const oldLog = [...currLogState];            
             if (newArr.indexOf(card) === -1) {
               // Action if card has NO multiples in cardArr
               const updatedPlayers = getUpdatedPlayersFinish(currPlayerState, playerInd, cardArr, newArr);    
               props.firebase.updateStack(gameKey, [...oldStack, card]);
+              props.firebase.updateLog(gameKey, [...oldLog, {
+                name: playerName,
+                card
+              }]);
               props.firebase.updatePlayerData(gameKey, updatedPlayers);
               setTempStackState(null);
               setTempPlayerState(null);
+              setTempLogState(null);
             } else {
               // Action if card has multiples in cardArr
               const updatedPlayers = getUpdatedPlayersContinue(currPlayerState, playerInd, cardArr, newArr);
               setTempStackState([...oldStack, card]);
               setTempPlayerState(updatedPlayers);
+              setTempLogState([...oldLog, {
+                name: playerName,
+                card
+              }]);
             }
             // Additional actions if card is 9.                        
             if (card === 9 && currGarbageState.length > 1) {
@@ -161,11 +184,20 @@ const GameBoard = ( props ) => {
                 if (newArr.indexOf(card) === -1) {
                   props.firebase.updateStack(gameKey, ['end']);
                   props.firebase.updateGarbage(gameKey, newGarbage);
+                  props.firebase.updateLog(gameKey, [...oldLog, {
+                    name: 'bishopcard',
+                    card: resurrect
+                  }]);
                   setTempStackState(null);
                   setTempGarbageState(null);
+                  setTempLogState(null);
                 } else {
                   setTempStackState(['end']);
                   setTempGarbageState(newGarbage);
+                  setTempLogState([...oldLog, {
+                    name: 'bishopcard',
+                    card: resurrect
+                  }])
                 }                
               } else {
                 let newGarbage = [...currGarbageState];
@@ -173,11 +205,20 @@ const GameBoard = ( props ) => {
                 if (newArr.indexOf(card) === -1) {
                   props.firebase.updateStack(gameKey, [...oldStack, card, resurrect]);
                   props.firebase.updateGarbage(gameKey, newGarbage);
+                  props.firebase.updateLog(gameKey, [...oldLog, {
+                    name: 'bishopcard',
+                    card: resurrect
+                  }]);
                   setTempStackState(null);
                   setTempGarbageState(null);
+                  setTempLogState(null);
                 } else {
                   setTempStackState([...oldStack, card, resurrect]);
                   setTempGarbageState(newGarbage);
+                  setTempLogState([...oldLog, {
+                    name: 'bishopcard',
+                    card: resurrect
+                  }])
                 }               
               }
             }
@@ -192,18 +233,28 @@ const GameBoard = ( props ) => {
           props.setWinner(gameKey, currPlayerState[playerInd].name);
         } else {
           if (newArr.length < 1) { newArr.push('end')}
+          const oldLog = [...currLogState];  
           if (newArr.indexOf(card) === -1) {
             const updatedPlayers = getUpdatedPlayersFinish(currPlayerState, playerInd, cardArr, newArr);
             props.firebase.updateGarbage(gameKey, [...currStackState, card])
             props.firebase.updateStack(gameKey, ['end']);
+            props.firebase.updateLog(gameKey, [...oldLog, {
+              name: playerName,
+              card
+            }]);
             props.firebase.updatePlayerData(gameKey, updatedPlayers);
             setTempGarbageState(null);
             setTempStackState(null);
+            setTempLogState(null);
             setTempPlayerState(null);
           } else {
             const updatedPlayers = getUpdatedPlayersContinue(currPlayerState, playerInd, cardArr, newArr);
             setTempGarbageState([...currStackState, card]);
             setTempStackState(['end']);
+            setTempLogState([...oldLog, {
+              name: playerName,
+              card
+            }])
             setTempPlayerState(updatedPlayers);
           }         
         }
@@ -218,9 +269,10 @@ const GameBoard = ( props ) => {
    * @param {string|number} card - The value of the card that was clicked.
    * @param {number} cardInd - The index of the card clicked.
    * @param {number} playerInd - The index of the active player in the playerState array.
+   * @param {string} playerName - The name of the active player.
    * @param {string} gameKey - The id of the active game.
    */
-  const activefaceDownHandler = (active, card, cardInd, playerInd, gameKey) => {
+  const activefaceDownHandler = (active, card, cardInd, playerInd, playerName, gameKey) => {
     if (active) {
 
       let actionTaken = false;
@@ -236,7 +288,12 @@ const GameBoard = ( props ) => {
           } else {
             const updatedPlayers = getUpdatedPlayersFinish(playerState, playerInd, 'faceDown', newFaceDown);           
             const oldStack = [...stackState];
+            const oldLog = [...logState];
             props.firebase.updateStack(gameKey, [...oldStack, card]);
+            props.firebase.updateLog(gameKey, [...oldLog, {
+              name: playerName,
+              card
+            }]);
             props.firebase.updatePlayerData(gameKey, updatedPlayers);
             if (card === 9 && garbageState.length > 1) {
               const resInd = Math.floor(Math.random() * garbageState.length -1 ) + 1;
@@ -252,6 +309,10 @@ const GameBoard = ( props ) => {
                 props.firebase.updateStack(gameKey, [...oldStack, card, resurrect]);
                 props.firebase.updateGarbage(gameKey, newGarbage);
               }
+              props.firebase.updateLog(gameKey, [...oldLog, {
+                name: 'bishopcard',
+                card: resurrect
+              }]);
             }
           }       
         }
@@ -267,6 +328,10 @@ const GameBoard = ( props ) => {
           const updatedPlayers = getUpdatedPlayersFinish(playerState, playerInd, 'faceDown', newFaceDown); 
           props.firebase.updateGarbage(gameKey, [...stackState, card])
           props.firebase.updateStack(gameKey, ['end']);
+          props.firebase.updateLog(gameKey, [...logState, {
+            name: playerName,
+            card
+          }]);
           props.firebase.updatePlayerData(gameKey, updatedPlayers);
         }
       }
@@ -292,6 +357,11 @@ const GameBoard = ( props ) => {
           }
           return player;
         })
+        props.firebase.updateLog(gameKey, [...logState, {
+          name: 'takesstack',
+          card: null,
+          player: playerName
+        }]);
         props.firebase.updatePlayerData(gameKey, updatedPlayers);
       }
     }
@@ -301,17 +371,19 @@ const GameBoard = ( props ) => {
    * Handles the mechanics of the active user clicking on the "Take Stack" button.
    *
    * @param {number} playerInd - The index of the active player in the playerState array.
+   * @param {string} playerName - The name of the active player.
    * @param {string} gameKey - The id of the active game.
    */
-  const takeStackHandler = (playerInd, gameKey) => {
+  const takeStackHandler = (playerInd, playerName, gameKey) => {
     
     const currPlayerState = getCurrPlayerState();
     const currStackState = getCurrStackState();
     const currGarbageState = getCurrGarbageState();
+    const currLogState = getCurrLogState();
     
     let newHand = [...currPlayerState[playerInd].hand];
     if (currStackState.length > 1) {
-      const prevStackCards = currStackState.slice(1);
+      const prevStackCards = currStackState.slice(1);     
       if (newHand[0] === 'end') {
         newHand = prevStackCards;
       } else {
@@ -319,28 +391,37 @@ const GameBoard = ( props ) => {
       }
       props.firebase.updateStack(gameKey, ['end']);
       setTempStackState(null);
+
     } else {
       props.firebase.updateStack(gameKey, currStackState);
       setTempStackState(null);
     }
     const updatedPlayers = getUpdatedPlayersFinish(currPlayerState, playerInd, 'hand', newHand);
+    props.firebase.updateLog(gameKey, [...currLogState, {
+      name: 'takesstack',
+      card: null,
+      player: playerName
+    }]);
     props.firebase.updateGarbage(gameKey, currGarbageState);
     props.firebase.updatePlayerData(gameKey, updatedPlayers);
+    setTempLogState(null);
     setTempGarbageState(null);
-    setTempPlayerState(null);
+    setTempPlayerState(null); 
   }
 
   /**
    * Handles the mechanics of the active user clicking on the "Finish Turn" button once at least one card has been played. Note: The player, stack and garbage state are all updated regardless of the stack being present, due to a potential situation of a card (which had a multiple in the same array) being played by the active player before the "take stack" button was clicked - a rare situation, but possible.
    *
    * @param {number} playerInd - The index of the active player in the playerState array.
+   * @param {string} playerName - The name of the active player.
    * @param {string} gameKey - The id of the active game.
    */
-  const finishTurnHandler = (playerInd, gameKey) => {
+  const finishTurnHandler = (playerInd, playerName, gameKey) => {
     
     const currPlayerState = getCurrPlayerState();
     const currStackState = getCurrStackState();
     const currGarbageState = getCurrGarbageState();
+    const currLogState = getCurrLogState();
     
     const updatedPlayers = currPlayerState.map((player, index) => {
       if (index !== playerInd) {
@@ -353,10 +434,12 @@ const GameBoard = ( props ) => {
     })
     props.firebase.updateGarbage(gameKey, currGarbageState);
     props.firebase.updateStack(gameKey, currStackState);
-    props.firebase.updatePlayerData(gameKey, updatedPlayers); 
+    props.firebase.updatePlayerData(gameKey, updatedPlayers);
+    props.firebase.updateLog(gameKey, currLogState); 
     setTempGarbageState(null);
     setTempStackState(null);
     setTempPlayerState(null);
+    setTempLogState(null);
   }
 
   const playerDispClasses = ['first', 'second', 'third'];
@@ -415,9 +498,13 @@ const GameBoard = ( props ) => {
   const garbageLength = getCurrGarbageState().length - 1;
   const stackTop = getStackTop(getCurrStackState());
 
+  console.log(logState);
+
   // console.log(playerState);
   // console.log("stack" + stackState);
   // console.log("garbage" + garbageState);
+  // console.log("templog");
+  // console.log(tempLogState);
   // console.log("tempgarbage" + tempGarbageState);
   // console.log("tempstack" + tempStackState);
   // console.log("tempplayer" + tempPlayerState);
@@ -437,6 +524,10 @@ const GameBoard = ( props ) => {
         </ol>
         <h3>Cards in graveyard: {garbageLength}</h3>
         <h3>Cards in stack: {stackLength}</h3>
+        <h3>Game Log</h3>
+        <GameLog 
+          log={logState}
+        />
       </div>
     </main>
   );

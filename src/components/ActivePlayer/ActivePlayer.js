@@ -16,7 +16,7 @@ const ActivePlayer = ( props ) => {
       return <p key={uuidv4()}></p>
     }
     return (
-      <li key={uuidv4()} className={'card' + card + faceUpHoverClass} onClick={() => props.activeCards(faceUpActive, card, index, props.playerInd, props.gameId, 'faceUp')}></li>
+      <li key={uuidv4()} className={'card' + card + faceUpHoverClass} onClick={() => props.activeCards(faceUpActive, card, index, props.playerInd, props.name, props.gameId, 'faceUp')}></li>
     )
   })
 
@@ -27,7 +27,7 @@ const ActivePlayer = ( props ) => {
       return <p key={uuidv4()}>No cards left face-up.</p>
     }
     return (
-      <li key={uuidv4()} className={'cardback' + faceDownHoverClass} card={card} onClick={() => props.activeFaceDown(faceDownActive, card, index, props.playerInd, props.gameId)}></li>
+      <li key={uuidv4()} className={'cardback' + faceDownHoverClass} card={card} onClick={() => props.activeFaceDown(faceDownActive, card, index, props.playerInd, props.name, props.gameId)}></li>
     )
   })
   
@@ -44,6 +44,7 @@ const ActivePlayer = ( props ) => {
           gameId={props.gameId}
           activeCards={props.activeCards}
           playerInd={props.playerInd}
+          name={props.name}
           showHand={setShowHand}
         />
       </div>}
@@ -59,8 +60,8 @@ const ActivePlayer = ( props ) => {
       </div>
       <div className={styles.options}>
         <button onClick={() => setShowHand(true)}>Hand Cards</button>
-        {props.turn === 1 && <button onClick={() => props.takeStack(props.playerInd, props.gameId)}>Take stack</button>}
-        {props.canFinish && <button onClick={() => props.finishTurn(props.playerInd, props.gameId)}>Finish Turn</button>}
+        {props.turn === 1 && <button onClick={() => props.takeStack(props.playerInd, props.name, props.gameId)}>Take stack</button>}
+        {props.canFinish && <button onClick={() => props.finishTurn(props.playerInd, props.name, props.gameId)}>Finish Turn</button>}
       </div>
     </div>
   )

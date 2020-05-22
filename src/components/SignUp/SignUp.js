@@ -45,6 +45,7 @@ const SignUp = ( props ) => {
       <Link to="/main-menu" className='home'><i className="fas fa-home"></i></Link>
       <form onSubmit={onSubmit} className={styles.container}>
         <label htmlFor="username">Username: </label>
+        {/* Note: It is important that the max length of the username is 8 characters, as otherwise it is possible to break the log feature by having names such as 'startgame' or 'bishopcard'. In the future this can be avoided by implementing a list of not-allowed names. */}
         <input 
           type="text"
           name="username"
@@ -52,6 +53,7 @@ const SignUp = ( props ) => {
           onChange={(e) => setUsername(e.target.value)}
           placeholder="Peasant"
           maxLength={8}
+          minLength={2}
         />
         <label htmlFor="email">E-mail: </label>
         <input 

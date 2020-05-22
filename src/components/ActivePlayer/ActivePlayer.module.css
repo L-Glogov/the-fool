@@ -60,3 +60,7 @@ div.container {
   position: absolute;
   bottom: 2%;
 }
+
+.options button {
+  margin-right: 2vw;
+}

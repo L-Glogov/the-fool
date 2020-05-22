@@ -76,6 +76,12 @@ class Firebase {
     return this.db.ref().update(updates);
   }
 
+  updateLog = (gameKey, log) => {
+    let updates = {};
+    updates['/player-state/' + gameKey + '/log'] = log;
+    return this.db.ref().update(updates);
+  }
+
   playerData = () => this.db.ref('player-state');
 
   /*  -------User related methods----------- */

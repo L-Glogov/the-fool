@@ -193,7 +193,11 @@ const App = ( props ) => {
     const playerState = {
       players: playersArr,
       stack: ["end"],
-      garbage: ["end"]
+      garbage: ["end"],
+      log: [{
+        name: 'startgame',
+        card: null
+      }]
     }
 
     props.firebase.addPlayerData(playerState, gameKey);

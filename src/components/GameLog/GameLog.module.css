@@ -1,0 +1,4 @@
+.container {
+  max-height: 30vh;
+  overflow-y: auto;
+}
