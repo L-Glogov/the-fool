@@ -498,17 +498,6 @@ const GameBoard = ( props ) => {
   const garbageLength = getCurrGarbageState().length - 1;
   const stackTop = getStackTop(getCurrStackState());
 
-  console.log(logState);
-
-  // console.log(playerState);
-  // console.log("stack" + stackState);
-  // console.log("garbage" + garbageState);
-  // console.log("templog");
-  // console.log(tempLogState);
-  // console.log("tempgarbage" + tempGarbageState);
-  // console.log("tempstack" + tempStackState);
-  // console.log("tempplayer" + tempPlayerState);
-   
   return (
     <main className={styles.main}>
       <Link to="/main-menu" className='home'><i className="fas fa-home"></i></Link> 
