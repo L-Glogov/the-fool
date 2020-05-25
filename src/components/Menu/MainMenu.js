@@ -64,7 +64,7 @@ const MainMenu = ( props ) => {
           {ruleGameListDisp === 'rules' && 
           <ul>
             <li>You start with 13 cards. 4 cards face down which nobody sees. 4 cards face up which everybody can see and 5 cards in your hand which only you can see.</li>
-            <li>On your turn you can play any card (or multiple of the same card), as long as it is higher, or equal to, than the top card of the stack.</li>
+            <li>On your turn you can play any card (or multiple of the same card), as long as it is higher, or equal to, than the top card of the stack. The bishop is the only card which cannot be played in multiples.</li>
             <li>As long as you still have cards in your hand you can only play cards from there. You then play the face up cards - one card at a time.</li>
             <li>After finishing your face up cards, you play your face down cards, picking them blindly.</li>
             <li>If you cannot play any card that is higher, or equal to, the top card of the stack you take the entire stack to your hand. And must now get rid of your hand again to be able to play the face up or face down cards.</li>

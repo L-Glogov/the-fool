@@ -29,7 +29,7 @@ const Lobby = ( props ) => {
           <p>{isHost && index !== 0 && <button onClick={() => props.updatePlayers(props.gameList[gameIndex].id, withoutPlayer)} className={styles.kick}><i className="fas fa-user-slash"></i></button>}</p>
           <p>{item.name}</p>
           <p>Status: {item.ready ? "Ready": "Not ready"}</p> 
-          <p>{isPlayer && <button className={styles.check} onClick={() =>props.updatePlayers(props.gameList[gameIndex].id, readyPlayer)}>{item.ready ? <i className="fas fa-check"></i>: <i className="fas fa-times"></i>}</button>}</p>       
+          <p>{isPlayer && <button className={styles.check} onClick={() =>props.updatePlayers(props.gameList[gameIndex].id, readyPlayer)}>{item.ready ? <i className="fas fa-times"></i>: <i className="fas fa-check"></i>}</button>}</p>       
         </div>
       </li>
     )

@@ -151,43 +151,23 @@ const GameBoard = ( props ) => {
               const resurrect = garbageState[resInd];
               if (resurrect === "C") {
                 const newGarbage = [...garbageState, ...oldStack.slice(1)];
-                if (newArr.indexOf(card) === -1) {
-                  props.firebase.updateStack(gameKey, ['end']);
-                  props.firebase.updateGarbage(gameKey, newGarbage);
-                  props.firebase.updateLog(gameKey, [...oldLog, {
-                    name: 'bishopcard',
-                    player: playerName,
-                    card: resurrect
-                  }]);
-                } else {
-                  setStackState(['end']);
-                  setGarbageState(newGarbage);
-                  setLogState([...oldLog, {
-                    name: 'bishopcard',
-                    player: playerName,
-                    card: resurrect
-                  }])
-                }                
+                props.firebase.updateStack(gameKey, ['end']);
+                props.firebase.updateGarbage(gameKey, newGarbage);
+                props.firebase.updateLog(gameKey, [...oldLog, {
+                  name: 'bishopcard',
+                  player: playerName,
+                  card: resurrect
+                  }]);           
               } else {
                 let newGarbage = [...garbageState];
                 newGarbage.splice(resInd, 1);
-                if (newArr.indexOf(card) === -1) {
-                  props.firebase.updateStack(gameKey, [...oldStack, card, resurrect]);
-                  props.firebase.updateGarbage(gameKey, newGarbage);
-                  props.firebase.updateLog(gameKey, [...oldLog, {
-                    name: 'bishopcard',
-                    player: playerName,
-                    card: resurrect
-                  }]);
-                } else {
-                  setStackState([...oldStack, card, resurrect]);
-                  setGarbageState(newGarbage);
-                  setLogState([...oldLog, {
-                    name: 'bishopcard',
-                    player: playerName,
-                    card: resurrect
-                  }])
-                }               
+                props.firebase.updateStack(gameKey, [...oldStack, card, resurrect]);
+                props.firebase.updateGarbage(gameKey, newGarbage);
+                props.firebase.updateLog(gameKey, [...oldLog, {
+                  name: 'bishopcard',
+                  player: playerName,
+                  card: resurrect
+                }]);            
               }
             }
           } 
