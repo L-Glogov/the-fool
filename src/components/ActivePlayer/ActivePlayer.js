@@ -59,7 +59,7 @@ const ActivePlayer = ( props ) => {
         </ul>
       </div>
       <div className={styles.options}>
-        <button onClick={() => setShowHand(true)}>Hand Cards</button>
+        {props.hand[0] !== 'end' && <button onClick={() => setShowHand(true)}>Hand Cards</button>}
         {props.turn === 1 && <button onClick={() => props.takeStack(props.playerInd, props.name, props.gameId)}>Take stack</button>}
         {props.canFinish && <button onClick={() => props.finishTurn(props.playerInd, props.gameId)}>Finish Turn</button>}
       </div>

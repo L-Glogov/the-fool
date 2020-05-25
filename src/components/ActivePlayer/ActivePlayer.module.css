@@ -58,7 +58,7 @@ div.container {
   display: flex;
   flex-direction: row;
   position: absolute;
-  bottom: 2%;
+  bottom: -5%;
 }
 
 .options button {
