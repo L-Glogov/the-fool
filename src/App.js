@@ -55,7 +55,6 @@ const App = ( props ) => {
    * @param {Object} hist - The current react-router history Object.
    */
   const MMJoinGameHandler = (hist) => {
-    console.log("Join game clicked");
     
     const checkIfPlaying = (currentUserId) => {
       let isPlaying = false;
@@ -89,7 +88,6 @@ const App = ( props ) => {
    * @param {Object} hist - The current react-router history Object.
    */
   const MMHostGameHandler = (hist) => {
-    console.log("Host game clicked");
     const gameKey = props.firebase.newGameKey();
     const game = {
       id: gameKey,
@@ -131,7 +129,6 @@ const App = ( props ) => {
    * @param {string} players[].id The player's id.
    */
   const LobbyStartHandler = (gameKey, players) => {
-    console.log("The game has been started");
   
     const getDeckArr = (numPlayers) => {
       const baseDeck = [1,2,3,4,5,6,7,8,9,10,11,'C','M'];
@@ -214,7 +211,6 @@ const App = ( props ) => {
   // -----GameBoard Handlers-----
    
   const GBSetWinner = (gameKey, name) => {
-    console.log('You Won!')
     const time = Date.now();
     const winnerObj = {
       won: true,

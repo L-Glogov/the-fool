@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { v4 as uuidv4 } from 'uuid';
 import styles from './GameLog.module.css';
 
 const GameLog = ( props ) => {
@@ -54,19 +55,19 @@ const GameLog = ( props ) => {
     
     if (item.name === 'startgame') {
       return (
-        <li>Game started!</li>
+        <li key={uuidv4()}>Game started!</li>
       )
     } else if (item.name === 'bishopcard') {
       return (
-        <li>{item.player} played the bishop card,<br/> which has resurrected the {card}.</li>
+        <li key={uuidv4()}>{item.player} played the bishop card,<br/> which has resurrected the {card}.</li>
       )
     } else if (item.name === 'takesstack') {
       return (
-        <li>{item.player} took the stack!</li>
+        <li key={uuidv4()}>{item.player} took the stack!</li>
       )
     } else {
       return (
-        <li>{item.name} played the {card}.</li>
+        <li key={uuidv4()}>{item.name} played the {card}.</li>
       )
     }
   })

@@ -119,8 +119,6 @@ const GameBoard = ( props ) => {
     return updatedPlayers;
   }
 
-
-
     /* ------ The ActivePlayer handlers ------ */
 
   /**
@@ -135,6 +133,7 @@ const GameBoard = ( props ) => {
    * @param {string} cardArr - The name of the given card array of which the card was clicked.
    */
   const activeCardArrHandler = (active, card, cardInd, playerInd, playerName, gameKey, cardArr) => {
+
     if (active) {
       const currPlayerState = getCurrPlayerState();
       const currStackState = getCurrStackState();
@@ -501,6 +500,11 @@ const GameBoard = ( props ) => {
   const stackLength = getCurrStackState().length - 1;
   const garbageLength = getCurrGarbageState().length - 1;
   const stackTop = getStackTop(getCurrStackState());
+
+  
+  console.log(playerState)
+  console.log('temp')
+  console.log(tempPlayerState)
 
   return (
     <main className={styles.main}>

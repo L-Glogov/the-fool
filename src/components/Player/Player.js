@@ -15,8 +15,11 @@ const Player = ( props ) => {
   })
 
   const faceDownCards = props.faceDown.map(card => {
+    if (card === 'end') {
+      return <p key={uuidv4()}>No cards left face-down.</p>
+    }
     return (
-      <li key={uuidv4()} card={card} className='cardback'></li>
+      <li key={uuidv4()} className='cardback'></li>
     )
   })
 

@@ -24,10 +24,10 @@ const ActivePlayer = ( props ) => {
   const faceDownHoverClass = faceDownActive ? ' active' : '';
   const faceDownCards = props.faceDown.map((card, index) => {
     if (card === 'end') {
-      return <p key={uuidv4()}>No cards left face-up.</p>
+      return <p key={uuidv4()}>No cards left face-down.</p>
     }
     return (
-      <li key={uuidv4()} className={'cardback' + faceDownHoverClass} card={card} onClick={() => props.activeFaceDown(faceDownActive, card, index, props.playerInd, props.name, props.gameId)}></li>
+      <li key={uuidv4()} className={'cardback' + faceDownHoverClass} onClick={() => props.activeFaceDown(faceDownActive, card, index, props.playerInd, props.name, props.gameId)}></li>
     )
   })
   
