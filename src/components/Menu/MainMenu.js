@@ -32,6 +32,19 @@ const MainMenu = ( props ) => {
     )
   })
   
+  let joinOrSpectate = 'Spectate Game';
+  if (props.current.players) {
+    if (!props.current.started) {
+    joinOrSpectate = 'Join Game';
+  }
+    props.current.players.forEach(item => {
+      if (item.id === props.user.uid) {
+        joinOrSpectate = 'Join Game';
+      }
+    })
+  }
+  
+
   return (
     <main className={styles.main}>
       <div className={styles.leftcont}>
@@ -39,7 +52,7 @@ const MainMenu = ( props ) => {
           ? <div>
               <p>You are signed in as {props.user.displayName}</p>
               <button onClick={() => props.host(props.history)}>Host Game</button>
-              {props.current.id !== null && <button onClick={() => props.join(props.history)}>Join Game</button>}
+              {props.current.id !== null && <button onClick={() => props.join(props.history)}>{joinOrSpectate}</button>}
               {props.current.id !== null && <p className={styles.chosengame}>Chosen game: {props.current.host}&apos;s Game {'\u00a0 \u00a0'}</p>}
             </div> 
           : <Link to="/signin" className={styles.link}>Sign in to start!</Link>
