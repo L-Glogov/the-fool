@@ -11,7 +11,7 @@ It is possible to see how the game works here: https://upbeat-raman-c3e3bb.netli
 ### Game Rules
 
 * You start with 13 cards. 4 cards face down which nobody sees. 4 cards face up which everybody can see and 5 cards in your hand which only you can see.
-* On your turn you can play any card (or multiple of the same card), as long as it is higher, or equal to, than the top card of the stack. The bishop is the only card which cannot be played in multiples.
+* On your turn you can play any card (or multiple of the same card), as long as it is higher, or equal to, than the top card of the stack. The active (one that resurrect a new card) bishop and bomb are the only cards which cannot be played in multiples.
 * As long as you still have cards in your hand you can only play cards from there. You then play the face up cards - one card at a time.
 * After finishing your face up cards, you play your face down cards, picking them blindly.
 * If you cannot play any card that is higher, or equal to, the top card of the stack you take the entire stack to your hand, and must now get rid of your hand again to be able to play the face up or face down cards.

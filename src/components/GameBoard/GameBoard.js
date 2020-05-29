@@ -108,13 +108,13 @@ const GameBoard = ( props ) => {
    * @param {string} cardArr - The name of the given card array of which the card was clicked.
    */
   const activeCardArrHandler = (active, card, cardInd, playerInd, playerName, gameKey, cardArr) => {
-    const stackTop = getStackTop();
+    
     const playingMultiple = playerState[playerInd].canFinish 
-      ? card === stackTop
+      ? card === stackState[stackState.length-1]
       : true;
+
     if (active && playingMultiple) {
-      
-                
+      const stackTop = getStackTop();              
       if (card !== 'C') {
         if (card >= stackTop || stackTop === 'end' || card === 1 || card === 'M') {
           const newArr= [...playerState[playerInd][cardArr]];
@@ -182,25 +182,14 @@ const GameBoard = ( props ) => {
         } else {
           if (newArr.length < 1) { newArr.push('end')}
           const oldLog = [...logState];  
-          if (newArr.indexOf(card) === -1) {
-            const updatedPlayers = getUpdatedPlayersFinish(playerInd, cardArr, newArr);
-            props.firebase.updateGarbage(gameKey, [...stackState, card])
-            props.firebase.updateStack(gameKey, ['end']);
-            props.firebase.updateLog(gameKey, [...oldLog, {
-              name: playerName,
-              card
-            }]);
-            props.firebase.updatePlayerData(gameKey, updatedPlayers);
-          } else {
-            const updatedPlayers = getUpdatedPlayersContinue(playerInd, cardArr, newArr);
-            setGarbageState([...stackState, card]);
-            setStackState(['end']);
-            setLogState([...oldLog, {
-              name: playerName,
-              card
-            }])
-            setPlayerState(updatedPlayers);
-          }         
+          const updatedPlayers = getUpdatedPlayersFinish(playerInd, cardArr, newArr);
+          props.firebase.updateGarbage(gameKey, [...stackState, card])
+          props.firebase.updateStack(gameKey, ['end']);
+          props.firebase.updateLog(gameKey, [...oldLog, {
+            name: playerName,
+            card
+          }]);
+          props.firebase.updatePlayerData(gameKey, updatedPlayers);  
         }
       }  
     }
